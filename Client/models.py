@@ -16,7 +16,7 @@ class Emp(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     doj = models.DateTimeField(auto_now_add = True)
     age = models.IntegerField()
-    emp = models.OneToOneField(User,on_delete = models.CASCADE)
+    user = models.OneToOneField(User,on_delete = models.CASCADE)
     points = models.IntegerField()
     designtion = models.CharField(max_length=20)
     def str(self):
@@ -41,6 +41,7 @@ class Team(models.Model):
         return self.name
 
 class Project(models.Model):
+    name = models.CharField(max_length=20 , blank=True , null=True)
     description = models.CharField(max_length=500)
     file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
     default_pts = models.IntegerField()
@@ -48,11 +49,32 @@ class Project(models.Model):
     b_pts = models.IntegerField()
     total = models.IntegerField()
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+<<<<<<< HEAD
     status = models.BooleanField()
     team = models.OneToOneField(Team, on_delete = models.CASCADE)
+=======
+    status = models.BooleanField(default=False)
+    deadline = models.DateField(blank=True , null=True)
+
+class Team(models.Model):
+    project = models.OneToOneField(Project, on_delete = models.CASCADE)
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    child = models.ManyToManyField(Child)
+    name = models.CharField(max_length=50)
+
+    def str(self):
+        return self.name
+>>>>>>> fb9ab1108c53e69816eb6bbe0a26b15dfab6c8a2
 
 class Voting(models.Model):
     emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
     team = models.OneToOneField(Team, on_delete = models.CASCADE)
     project = models.OneToOneField(Project, on_delete = models.CASCADE)
     total_pts = models.IntegerField()
+
+class Submissions(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    after_deadline = models.BooleanField(default=False)
