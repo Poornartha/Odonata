@@ -1,9 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Organization(models.Model):
+    name = models.TextField(max_length=100)
+    description = models.TextField(max_length=100, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
 
 class Emp(models.Model):
     name = models.CharField(max_length= 50)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     doj = models.DateTimeField(auto_now_add = True)
     age = models.IntegerField()
     emp = models.OneToOneField(User,on_delete = models.CASCADE)
