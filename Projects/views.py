@@ -22,29 +22,41 @@ def create_project(request):
         return HttpResponseRedirect(reverse , 'create_project')
     else:
         print('project created unsuccessful')
-    return render(request , 'project_create.html' , context)
+    return render(request , 'projects/project_create.html' , context)
 
 def submit_project(request , ppk ,tpk):
     context = {}
     context['flag'] = False
     project = Project.objects.get(id = ppk)
-    team = Teams.objects.get(id = tpk)
+    team = Team.objects.get(id = tpk)
     user = request.user
-    employee = Emp.objects.all(user = user)
-    child = Child.objects.get(emp=employee , parent=project.parent)
+    employee = Emp.objects.get(user = user)
+    child = Child.objects.filter(emp=employee , parent=project.parent)
     if child in team.child.all():
         if request.method == 'POST':
             project_file = request.FILES['project_file']
             project.file_project = project_file
-            timestamp = datetime.now()
+            timestamp = datetime.now
             after_deadline = False
             if timestamp > project.deadline :
                 context['messages'] = 'You have submitted your project after deadline'
                 after_deadline = True
             Submissions.objects.create(project=project , child=child , team=team , after_deadline=after_deadline)
             return HttpResponseRedirect(reverse ,name = 'project_submit')
-    return render(request , 'project_submit',context)
+    return render(request , 'projects/project_submit.html',context)
 
-def accept_project(request):
-    pass
-    return render(request , 'project_accept')
+def accept_project(request , ppk , tpk):
+    context = {}
+    project = Project.objects.get(id = ppk)
+    user = request.user
+    team =Team.objects.get(id = tpk)
+    employee = Emp.objects.get(user=user)
+    parent = Parent.objects.filter(emp = employee)
+    context['files'] = project.file_project
+    context['childs'] = Team.child
+    if parent == project.parent:
+        if request.method == 'POST':
+            accepted_project = request.POST['accepted_project']
+            rejected_project = request.POST['rejected_project']
+            
+    return render(request , 'projects/project_accept.html' , context)

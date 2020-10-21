@@ -1,9 +1,5 @@
 from django.contrib import admin
-<<<<<<< HEAD
-from .models import Child, Emp, Parent, Project, Team, Voting
-=======
 from . models import Child, Emp, Parent, Project, Team, Voting, Organization
->>>>>>> 2af4b3450dc207096f6496a8e4608ec009973c72
 
 # Register your models here.
 admin.site.register(Organization)
