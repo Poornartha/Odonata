@@ -26,8 +26,8 @@ Create Team
       Select Member
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for children in child %}
-      <a class="dropdown-item" href="#">{{children.name}}</a>
+    {% for child in children %}
+      <a class="dropdown-item" href="#">{{child.emp.name}}</a>
      </div>
     {% endfor %}
   </div>
@@ -37,8 +37,8 @@ Create Team
       Select Member
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for children in child %}
-      <a class="dropdown-item" href="#">{{children.name}}</a>
+    {% for child in children %}
+      <a class="dropdown-item" href="#">{{child.emp.name}}</a>
      </div>
     {% endfor %}
   </div>
@@ -48,19 +48,8 @@ Create Team
       Select Member
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for children in child %}
-      <a class="dropdown-item" href="#">{{children.name}}</a>
-     </div>
-    {% endfor %}
-  </div>
-
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Select Member
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for children in child %}
-      <a class="dropdown-item" href="#">{{children.name}}</a>
+    {% for child in children %}
+      <a class="dropdown-item" href="#">{{child.emp.name}}</a>
      </div>
     {% endfor %}
   </div>
@@ -74,6 +63,7 @@ Create Team
   </form>
 
 </div>
-{% else %}
+</div>
+
 
 {% endblock %}
