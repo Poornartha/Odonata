@@ -20,6 +20,16 @@ class Child(models.Model):
     emp = models.ForeignKey(Emp, on_delete = models.CASCADE)
     parent = models.OneToOneField(Parent, on_delete = models.CASCADE)
 
+
+class Team(models.Model):
+    
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    child = models.ManyToManyField(Child)
+    name = models.CharField(max_length=50)
+
+    def str(self):
+        return self.name
+
 class Project(models.Model):
     description = models.CharField(max_length=500)
     file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
@@ -29,15 +39,7 @@ class Project(models.Model):
     total = models.IntegerField()
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
     status = models.BooleanField()
-
-class Team(models.Model):
-    project = models.OneToOneField(Project, on_delete = models.CASCADE)
-    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
-    child = models.ManyToManyField(Child)
-    name = models.CharField(max_length=50)
-
-    def str(self):
-        return self.name
+    team = models.OneToOneField(Team, on_delete = models.CASCADE)
 
 class Voting(models.Model):
     emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
