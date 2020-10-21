@@ -58,5 +58,6 @@ def accept_project(request , ppk , tpk):
         if request.method == 'POST':
             accepted_project = request.POST['accepted_project']
             rejected_project = request.POST['rejected_project']
-            
+            print(accept_project,rejected_project)
+            return HttpResponseRedirect(reverse , 'project_accept')
     return render(request , 'projects/project_accept.html' , context)
