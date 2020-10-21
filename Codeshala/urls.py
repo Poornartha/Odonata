@@ -21,17 +21,14 @@ import Organization
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
+
     path('projects/', include('Projects.urls')),
-]
-=======
+
+
     path('organization/', include('Organization.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,
                               document_root=settings.MEDIA_ROOT)
-<<<<<<< HEAD
-=======
->>>>>>> 2af4b3450dc207096f6496a8e4608ec009973c72
->>>>>>> fb9ab1108c53e69816eb6bbe0a26b15dfab6c8a2
+

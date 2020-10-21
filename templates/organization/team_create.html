@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Organization
+{% endblock %}
+
+{% block header %}
+Create Team
+{% endblock %}
+
+{% block content %}
+
+  
+<div class="container">
+  <form method="POST" class="col-md-8 mx-auto text-left mb-5" align="center">
+  {% csrf_token %}
+
+  <div class="form-group">
+      <label for="formGroupExampleInput">Team Name</label>
+      <input type="text" class="form-control border border-info" id="formGroupExampleInput" placeholder="Name" name="name">
+  </div>
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Select Member
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for children in child %}
+      <a class="dropdown-item" href="#">{{children.name}}</a>
+     </div>
+    {% endfor %}
+  </div>
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Select Member
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for children in child %}
+      <a class="dropdown-item" href="#">{{children.name}}</a>
+     </div>
+    {% endfor %}
+  </div>
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Select Member
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for children in child %}
+      <a class="dropdown-item" href="#">{{children.name}}</a>
+     </div>
+    {% endfor %}
+  </div>
+
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Select Member
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for children in child %}
+      <a class="dropdown-item" href="#">{{children.name}}</a>
+     </div>
+    {% endfor %}
+  </div>
+
+
+
+  
+
+    <button type="submit" class="btn btn-primary">Create Team</button>
+
+  </form>
+
+</div>
+{% else %}
+
+{% endblock %}

@@ -39,6 +39,14 @@ class Team(models.Model):
 
     def str(self):
         return self.name
+class Team(models.Model):
+    
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    child = models.ManyToManyField(Child)
+    name = models.CharField(max_length=50)
+
+    def str(self):
+        return self.name
 
 class Project(models.Model):
     name = models.CharField(max_length=20 , blank=True , null=True)
@@ -49,22 +57,10 @@ class Project(models.Model):
     b_pts = models.IntegerField()
     total = models.IntegerField()
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
-<<<<<<< HEAD
-    status = models.BooleanField()
-    team = models.OneToOneField(Team, on_delete = models.CASCADE)
-=======
     status = models.BooleanField(default=False)
     deadline = models.DateField(blank=True , null=True)
+    team = models.OneToOneField(Team, on_delete = models.CASCADE)
 
-class Team(models.Model):
-    project = models.OneToOneField(Project, on_delete = models.CASCADE)
-    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
-    child = models.ManyToManyField(Child)
-    name = models.CharField(max_length=50)
-
-    def str(self):
-        return self.name
->>>>>>> fb9ab1108c53e69816eb6bbe0a26b15dfab6c8a2
 
 class Voting(models.Model):
     emp = models.OneToOneField(Emp, on_delete = models.CASCADE )

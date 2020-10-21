@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Client.models import Organization
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Child, Team, Emp, Project, Parent, 
 
 # Create your views here.
 def org_create(request):
@@ -27,3 +27,19 @@ def org_create(request):
     else:
         context['valid1'] = False
     return render(request, 'organization/org_create.html', context)
+
+def team_create(request , pk):
+    context = {}
+
+    
+    project = Project.ojects.get(id = pk)
+    context['project'] = project
+    user = request.user
+    employee = Emp.objects.all(user = user)
+    parent = Parent.objects.all(emp = employee)
+    child = Child.objects.all(parent = parent)
+    context['child'] = child
+    if request.method == 'POST':
+        name = request.POST['name']
+        
+    return render(request, 'team_create.html', context)
