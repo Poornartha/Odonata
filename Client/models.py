@@ -13,7 +13,7 @@ class Organization(models.Model):
 
 class Emp(models.Model):
     name = models.CharField(max_length= 50)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE , default='')
     doj = models.DateTimeField(auto_now_add = True)
     age = models.IntegerField()
     user = models.OneToOneField(User,on_delete = models.CASCADE)
@@ -32,7 +32,6 @@ class Child(models.Model):
 
 
 class Team(models.Model):
-    
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
     child = models.ManyToManyField(Child)
     name = models.CharField(max_length=50)
@@ -51,7 +50,7 @@ class Project(models.Model):
     total = models.IntegerField()
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
     status = models.BooleanField(default=False)
-   
+    deadline = models.DateField(blank=True , null=True)
     team = models.OneToOneField(Team, on_delete = models.CASCADE, null =True)
 
 
@@ -61,7 +60,7 @@ class Voting(models.Model):
     project = models.OneToOneField(Project, on_delete = models.CASCADE)
     total_pts = models.IntegerField()
 
-class Submissions(models.Model):
+class Submission(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+
+Project Accept
+
+{% endblock %}
+
+{% block header %}
+
+Please fill the form to accept the project
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        <!--{% for file in files %}
+            {% if file %}
+                <div class="col-md-5 mx-auto mt-5" align="center">
+                    <a href={{file.url}} class="btn btn-dark">Upload File</a>
+                </div>
+            {% endif %}
+        {% endfor %}-->
+        <div class="form-group">
+          <label for="projectfile"> The project files of the submission</label>
+          
+
+        </div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+              <input type="radio" name="accepted_project" id="accepted_project" checked> Accept the project
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" name="rejected_project" id="rejected_project"> Reject the project
+            </label>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger">Please select the employee</button>
+            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <select name="employee" id="employee">
+                    {% for child in childs %}
+                        <option value="{{child.emp.name}}">{{child.emp.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Contributionalpoints">Please enter the contributional points</label>
+            <input type="number" class="form-control" id="c_points" name="c_points">
+        </div>
+        <div class="form-group">
+              <label for="Behaviouralpoints">Please enter the behavioural points</label>
+              <input type="number" class="form-control" id="b_points" name="b_points">
+        </div>  
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+
+{% endblock %}
