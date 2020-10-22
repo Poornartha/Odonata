@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
-from Client.models import Project , Emp , Team , Parent , Child
+from Client.models import Project , Emp , Team , Parent , Child , Submission
 from django.utils import timezone
 import datetime
 
@@ -42,23 +42,26 @@ def submit_project(request , ppk ,tpk):
             if timestamp > project.deadline :
                 context['messages'] = 'You have submitted your project after deadline'
                 after_deadline = True
-            #Submissions.objects.create(project=project , child=child , team=team , after_deadline=after_deadline)
+            Submission.objects.create(project=project , child=child , team=team , after_deadline=after_deadline)
             return HttpResponseRedirect(reverse ,name = 'project_submit')
     return render(request , 'projects/project_submit.html',context)
 
 def accept_project(request , ppk , tpk):
     context = {}
-    project = Project.objects.get(id = ppk)
     user = request.user
     team =Team.objects.get(id = tpk)
     employee = Emp.objects.get(user=user)
     parent = Parent.objects.filter(emp = employee)
-    context['files'] = project.file_project
-    context['childs'] = Team.child
-    if parent == project.parent:
+    #context['files'] = project.file_project.all()[0]
+    leader = Project.objects.filter(id = ppk , parent=parent)
+    context['childs'] = team.child.filter()
+    print(accept_project,rejected_project , leader , team , employee)
+    if leader is not None:
         if request.method == 'POST':
             accepted_project = request.POST['accepted_project']
             rejected_project = request.POST['rejected_project']
-            print(accept_project,rejected_project)
+            print(accept_project,rejected_project , leader , team , employee)
             return HttpResponseRedirect(reverse , 'project_accept')
+    else:
+        context['messages'] = 'You are not authorized'
     return render(request , 'projects/project_accept.html' , context)

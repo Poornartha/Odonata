@@ -20,16 +20,17 @@ Please fill the form to accept the project
 <div>
     <form method="POST">
         {% csrf_token %}
-        {% for file in files %}
+        <!--{% for file in files %}
             {% if file %}
                 <div class="col-md-5 mx-auto mt-5" align="center">
                     <a href={{file.url}} class="btn btn-dark">Upload File</a>
                 </div>
             {% endif %}
-        {% endfor %}
+        {% endfor %}-->
         <div class="form-group">
           <label for="projectfile"> The project files of the submission</label>
-          <input type="file" class="form-control" name="project_file" id="project_file">
+          
+
         </div>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
             <label class="btn btn-secondary active">
@@ -40,12 +41,11 @@ Please fill the form to accept the project
             </label>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-danger">Action</button>
+            <button type="button" class="btn btn-danger">Please select the employee</button>
             <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <div class="dropdown-menu">
-                <label for="employee">Please select the employee</label>
                 <select name="employee" id="employee">
                     {% for child in childs %}
                         <option value="{{child.emp.name}}">{{child.emp.name}}</option>
