@@ -41,6 +41,15 @@ def team_create(request , ppk):
     children = Child.objects.filter(parent = parent)
     context['children'] = children
     if request.method == 'POST':
-        name = request.POST['name']
+        
+        name1 = request.POST['name1']
+        name2 = request.POST['name2']
+        name3 = request.POST['name3']
+        team = Team.objects.create(name=name, parent = parent)
+        
+        
+        team.child.add(name1)
+        team.child.add(name2)
+        team.child.add(name3)
         
     return render(request, 'organization/team_create.html', context)
