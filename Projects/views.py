@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
-from Client.models import Project , Emp , Team , Parent , Child , Submissions
+from Client.models import Project , Emp , Team , Parent , Child
+from django.utils import timezone
 import datetime
 
 # Create your views here.
@@ -36,12 +37,12 @@ def submit_project(request , ppk ,tpk):
         if request.method == 'POST':
             project_file = request.FILES['project_file']
             project.file_project = project_file
-            timestamp = datetime.now
+            timestamp = timezone.now
             after_deadline = False
             if timestamp > project.deadline :
                 context['messages'] = 'You have submitted your project after deadline'
                 after_deadline = True
-            Submissions.objects.create(project=project , child=child , team=team , after_deadline=after_deadline)
+            #Submissions.objects.create(project=project , child=child , team=team , after_deadline=after_deadline)
             return HttpResponseRedirect(reverse ,name = 'project_submit')
     return render(request , 'projects/project_submit.html',context)
 
