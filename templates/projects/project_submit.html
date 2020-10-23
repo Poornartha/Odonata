@@ -17,8 +17,8 @@ Please fill the form to submit the project
 {% block content %}
 
 
-<div>
-    <form method="POST">
+<div class="container md-col-5">
+    <form method="POST" enctype='multipart/form-data'>
         {% csrf_token %}
         
         <div class="form-group">

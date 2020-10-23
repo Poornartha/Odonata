@@ -59,8 +59,8 @@ class Team(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=20 , blank=True , null=True)
     description = models.CharField(max_length=500)
-    file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
     default_pts = models.IntegerField()
+    project_create_file = models.FileField(upload_to='project_create/' , blank=True , null=True)
     c_pts = models.IntegerField()
     b_pts = models.IntegerField()
     total = models.IntegerField()
@@ -68,6 +68,8 @@ class Project(models.Model):
     status = models.BooleanField(default=False)
     deadline = models.DateField(blank=True , null=True)
     team = models.OneToOneField(Team, on_delete = models.CASCADE, null =True)
+    checksum = models.IntegerField(default = 0)
+    available_points = models.IntegerField(default = 0)
 
 
 class Voting(models.Model):
@@ -79,9 +81,11 @@ class Voting(models.Model):
 class Submission(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     after_deadline = models.BooleanField(default=False)
+<<<<<<< HEAD
 
 class Voting_Points(models.Model):
     project = models.ForeignKey(Project, on_delete = models.CASCADE)
@@ -91,3 +95,6 @@ class Voting_Points(models.Model):
     rank3 = models.IntegerField(default = 0)
     checksum = models.IntegerField(default = 0)
     
+=======
+    status = models.BooleanField(default=False , editable=True)
+>>>>>>> b6adaa3c9f4d5fbd74f55a2f3fc62f12f67afd8b
