@@ -60,7 +60,7 @@ class Project(models.Model):
     name = models.CharField(max_length=20 , blank=True , null=True)
     description = models.CharField(max_length=500)
     default_pts = models.IntegerField()
-    project_create_file = models.FileField(upload_to='project_create/' , blank=True , null=True)
+    project_create_file = models.FileField(upload_to='projectcreate/' , blank=True , null=True)
     c_pts = models.IntegerField()
     b_pts = models.IntegerField()
     total = models.IntegerField()
@@ -72,11 +72,11 @@ class Project(models.Model):
     available_points = models.IntegerField(default = 0)
 
 
-class Voting(models.Model):
-    emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
-    team = models.OneToOneField(Team, on_delete = models.CASCADE)
-    project = models.OneToOneField(Project, on_delete = models.CASCADE)
-    total_pts = models.IntegerField()
+# class Voting(models.Model):
+#     emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
+#     team = models.OneToOneField(Team, on_delete = models.CASCADE)
+#     project = models.OneToOneField(Project, on_delete = models.CASCADE)
+#     total_pts = models.IntegerField()
 
 class Submission(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
