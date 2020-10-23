@@ -5,30 +5,46 @@ class Organization(models.Model):
     name = models.TextField(max_length=100)
     description = models.TextField(max_length=100, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    confirmed = models.BooleanField(default=False)
+    confirmed = models.BooleanField(default=False, editable=True)
+    desigset = models.BooleanField(default=False, editable=True)
 
     def __str__(self):
         return self.name
 
+class Designation(models.Model):
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    designation = models.TextField()
+    priority = models.IntegerField()
+
+    def __str__(self):
+        return self.designation
 
 class Emp(models.Model):
     name = models.CharField(max_length= 50)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE , default='')
     doj = models.DateTimeField(auto_now_add = True)
+    dob = models.DateTimeField()
     age = models.IntegerField()
     user = models.OneToOneField(User,on_delete = models.CASCADE)
     points = models.IntegerField()
-    designtion = models.CharField(max_length=20)
-    def str(self):
+    designation = models.TextField(blank=True)
+    
+    def __str__(self):
         return self.name
 
 class Parent(models.Model):
     emp = models.OneToOneField(Emp, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return self.emp.name
+
 
 class Child(models.Model):
-    emp = models.ForeignKey(Emp, on_delete = models.CASCADE, unique= True)
-    parent = models.ManyToManyField(Parent)
+    emp = models.OneToOneField(Emp, on_delete = models.CASCADE)
+    parent = models.ManyToManyField(Parent, blank=True)
+
+    def __str__(self):
+        return self.emp.name
 
 
 class Team(models.Model):

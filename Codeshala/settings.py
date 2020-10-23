@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'Shoutout',
     'Client',
     'Organization',
+    'Candidate',
+    'Auction',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

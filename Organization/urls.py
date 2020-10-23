@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import org_create, team_create
+from .views import org_create, org_login, org_architecture, team_create
 
 
 urlpatterns = [
-    path('create/', org_create, name="rog_create"),
+    path('create/', org_create, name="org_create"),
+    path('login/', org_login, name="org_login"),
+    path('designation/', org_architecture, name="org_architecture"),
     path('team_create/<int:ppk>', team_create, name="team_create"),
-
 ]
