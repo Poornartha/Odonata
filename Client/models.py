@@ -21,9 +21,10 @@ class Designation(models.Model):
 
 class Emp(models.Model):
     name = models.CharField(max_length= 50)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE , default='')
     doj = models.DateTimeField(auto_now_add = True)
     dob = models.DateTimeField()
+    age = models.IntegerField()
     user = models.OneToOneField(User,on_delete = models.CASCADE)
     points = models.IntegerField()
     designation = models.TextField(blank=True)
@@ -45,18 +46,8 @@ class Child(models.Model):
     def __str__(self):
         return self.emp.name
 
-class Project(models.Model):
-    description = models.CharField(max_length=500)
-    file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
-    default_pts = models.IntegerField()
-    c_pts = models.IntegerField()
-    b_pts = models.IntegerField()
-    total = models.IntegerField()
-    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
-    status = models.BooleanField()
 
 class Team(models.Model):
-    project = models.OneToOneField(Project, on_delete = models.CASCADE)
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
     child = models.ManyToManyField(Child)
     name = models.CharField(max_length=50)
@@ -64,8 +55,30 @@ class Team(models.Model):
     def str(self):
         return self.name
 
+
+class Project(models.Model):
+    name = models.CharField(max_length=20 , blank=True , null=True)
+    description = models.CharField(max_length=500)
+    file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
+    default_pts = models.IntegerField()
+    c_pts = models.IntegerField()
+    b_pts = models.IntegerField()
+    total = models.IntegerField()
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    status = models.BooleanField(default=False)
+    deadline = models.DateField(blank=True , null=True)
+    team = models.OneToOneField(Team, on_delete = models.CASCADE, null =True)
+
+
 class Voting(models.Model):
     emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
     team = models.OneToOneField(Team, on_delete = models.CASCADE)
     project = models.OneToOneField(Project, on_delete = models.CASCADE)
     total_pts = models.IntegerField()
+
+class Submission(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    after_deadline = models.BooleanField(default=False)

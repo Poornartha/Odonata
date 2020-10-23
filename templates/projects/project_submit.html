@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+
+Project Create
+
+{% endblock %}
+
+{% block header %}
+
+Please fill the form to submit the project
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <label for="projectfile">Please enter the project file for submission</label>
+          <input type="file" class="form-control" name="project_file" id="project_file">
+        </div>
+        <div class="form-group">
+            <label for="Contributionalpoints">Please enter the contributional points</label>
+            <input type="number" class="form-control" id="c_points" name="c_points">
+          </div>
+          <div class="form-group">
+              <label for="Behaviouralpoints">Please enter the behavioural points</label>
+              <input type="number" class="form-control" id="b_points" name="b_points">
+          </div>  
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+
+{% endblock %}

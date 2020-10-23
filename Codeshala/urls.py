@@ -21,6 +21,7 @@ import Organization, Candidate, Auction
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('projects/', include('Projects.urls')),
     path('organization/', include('Organization.urls')),
     path('employee/', include('Candidate.urls')),
     path('auction/', include('Auction.urls')),
