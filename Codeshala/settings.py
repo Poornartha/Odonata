@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'Organization',
     'Candidate',
     'Auction',
+    'Voting',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

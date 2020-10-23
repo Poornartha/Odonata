@@ -16,6 +16,7 @@ def emp_create(request):
         password = request.POST['password']
         password2 = request.POST['pass2']
         organization_val = request.POST['organization']
+        print(organization_val)
         if len(list(Organization.objects.all().filter(name=organization_val))) > 0:
             organization = Organization.objects.all().filter(name=organization_val)[0]
             dob = request.POST['dob']
