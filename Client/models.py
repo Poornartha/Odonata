@@ -24,7 +24,7 @@ class Emp(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE , default='')
     doj = models.DateTimeField(auto_now_add = True)
     dob = models.DateTimeField()
-    age = models.IntegerField()
+    age = models.IntegerField(null=True)
     user = models.OneToOneField(User,on_delete = models.CASCADE)
     points = models.IntegerField()
     designation = models.TextField(blank=True)
