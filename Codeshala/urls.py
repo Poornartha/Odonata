@@ -25,6 +25,7 @@ urlpatterns = [
     path('organization/', include('Organization.urls')),
     path('employee/', include('Candidate.urls')),
     path('auction/', include('Auction.urls')),
+    path('shoutout/' , include('Shoutout.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
