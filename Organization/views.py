@@ -81,8 +81,6 @@ def org_architecture(request):
 
 def team_create(request , ppk):
     context = {}
-
-    
     project = Project.objects.get(id = ppk)
     context['project'] = project
     user = request.user
