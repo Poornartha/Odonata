@@ -15,7 +15,7 @@ Please fill the form to create a project
 
 {% block content %}
 
-<div>
+<div class="container">
     <form method="POST">
         {% csrf_token %}
         <div class="form-group">
@@ -25,6 +25,10 @@ Please fill the form to create a project
         <div class="form-group">
           <label for="Description">Please enter the project Description</label>
           <input type="text" class="form-control" name="project_description" id="project_description">
+        </div>
+        <div class="form-group">
+          <label for="projectfile">Please enter the project file if any</label>
+          <input type="file" class="form-control" name="project_file" id="project_file">
         </div>
         <div class="form-group">
             <label for="deadline">Please enter the project Deadline</label>

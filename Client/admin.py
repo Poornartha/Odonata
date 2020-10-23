@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Child, Emp, Parent, Project, Team, Voting, Organization
+from . models import Child, Emp, Parent, Project, Team, Voting, Organization , Submission
 
 # Register your models here.
 admin.site.register(Organization)
@@ -9,3 +9,4 @@ admin.site.register(Parent)
 admin.site.register(Project)
 admin.site.register(Team)
 admin.site.register(Voting)
+admin.site.register(Submission)
