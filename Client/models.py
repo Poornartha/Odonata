@@ -66,3 +66,12 @@ class Submission(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     after_deadline = models.BooleanField(default=False)
+
+class Voting_Points(models.Model):
+    project = models.ForeignKey(Project, on_delete = models.CASCADE)
+    employee = models.ForeignKey(Emp, on_delete = models.CASCADE)
+    rank1 = models.IntegerField(default = 0)
+    rank2 = models.IntegerField(default = 0)
+    rank3 = models.IntegerField(default = 0)
+    checksum = models.IntegerField(default = 0)
+    
