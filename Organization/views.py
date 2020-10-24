@@ -92,7 +92,7 @@ def team_create(request , ppk):
     context['children'] = children
     if request.method == 'POST':
         
-<<<<<<< HEAD
+
         team_name = request.POST['team_name']
       
         name1 = request.POST['name1']
@@ -155,31 +155,12 @@ def voting(request, ppk):
          
             voting_pts, created = Voting_Points.objects.get_or_create(project = project, employee = employee)
             
-
-
-
-            
-
-           
-
-         
-
-
-            
+    
 
             
             
-           
-            
-            
-            
-
-            
-
-                    
-
     return render(request, 'organization/voting.html', context )
 
-=======
-    return render(request, 'organization/team_create.html', context)
->>>>>>> dc0195a9e45a79f49bbeb60db6c4f3d6b0074db8
+
+    
+

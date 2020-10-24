@@ -85,7 +85,7 @@ class Submission(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     after_deadline = models.BooleanField(default=False)
-<<<<<<< HEAD
+
 
 class Voting_Points(models.Model):
     project = models.ForeignKey(Project, on_delete = models.CASCADE)
@@ -95,6 +95,4 @@ class Voting_Points(models.Model):
     rank3 = models.IntegerField(default = 0)
     checksum = models.IntegerField(default = 0)
     
-=======
-    status = models.BooleanField(default=False , editable=True)
->>>>>>> b6adaa3c9f4d5fbd74f55a2f3fc62f12f67afd8b
+  

@@ -7,5 +7,5 @@ from Shoutout.models import Shoutout
 
 def shoutout_create(request):
     context = {}
-    pass
+    
     return render(request , 'shoutout_create.html' , context)
