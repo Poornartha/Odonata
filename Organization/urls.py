@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import org_create, team_create, voting
-from .views import org_login, org_architecture, team_create
+
+from .views import org_login, org_architecture, team_create,  voting
 
 
 urlpatterns = [
