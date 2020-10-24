@@ -26,9 +26,16 @@ def shoutout_create(request):
         shoutout_list = []
         if shoutouts:
             for shoutout in shoutouts:
+                comment_list = []
                 print(shoutout.emp_appreciated)
                 shoutout_list.append(shoutout)
+                comments = Comment.objects.filter(shoutout = shoutout)
+                for comment in comments.all():
+                    comment_list.append(comment)
+                context['comments'] = comment_list
+                print(comments)
             context['shoutouts'] = shoutout_list
+            print('comment',comment_list)
         print(shoutout_list,user)
         if request.method =="POST":
             employee_name = request.POST['employee_name']
@@ -50,3 +57,32 @@ def shoutout_create(request):
     else:
         return HttpResponseRedirect(reverse('emp_login'))
     return render(request , 'shoutouts/shoutout.html' , context)
+
+def shoutout_comment(request,spk):
+    context = {}
+    shoutout = Shoutout.objects.get(id = spk)
+    user = request.user
+    context['shoutouts'] = shoutout
+    comments = Comment.objects.filter(shoutout=shoutout.id).order_by('-timestamp')
+    comment_list=[]
+    for comment in comments.all():
+        comment_list.append(comment)
+    context['comments'] = comment_list
+    if request.method == "POST":
+        comment = request.POST['comment']
+        print(shoutout)
+        Comment.objects.create(comment=comment , shoutout=shoutout , emp_commented= user , timestamp=datetime.datetime.now())
+        print('commented')
+        return HttpResponseRedirect(reverse('shoutout_comment' , args=[str(spk)]))
+    return render(request , 'shoutouts/shoutout_details.html' , context)
+
+def shoutout_like(request , spk):
+    shoutout = Shoutout.objects.get(id = spk)
+    user = request.user
+    if user.is_active:
+        if user in shoutout.likes.all():
+            shoutout.likes.remove(user)
+        else:
+            shoutout.likes.add(user)
+        return HttpResponseRedirect(reverse('shoutout_create'))
+        

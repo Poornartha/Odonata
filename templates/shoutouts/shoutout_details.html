@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Shoutout Details
+
+{% endblock %}
+
+
+{% block header %}
+
+Please fill the form to create a project
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card text-white bg-success mb-5">
+        <div class="card-header">Shoutout by {{shoutouts.emp_appreciator.name}}</div>
+        <div class="card-body">
+        <h5 class="card-title">Shoutout to {{shoutouts.emp_appreciated.name}}</h5>
+        <p class="card-text">{{shoutouts.description}}</p>
+        <form action={% url  'shoutout_comment' shoutouts.id %} method="POST">
+            {% csrf_token %}
+            <input type="text" name="comment" , id="comment" placeholder="Enter your comment">
+            <button type="submit" class="btn btn-warning">
+                Comment
+            </button>
+            {% for comment in comments %}
+                <div>
+                    <h5 class="card-title">{{comment.emp_commented}}</h5>
+                    <p>{{comment.comment}}</p>
+                    <p style="text-align:left">{{comment.timestamp}}</p>
+                </div>
+            {% endfor %}
+        </form>
+</div>
+{% endblock %}

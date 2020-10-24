@@ -2,7 +2,7 @@
 
 {% block title %}
 
-Shoutout Posts
+Shoutout All
 
 {% endblock %}
 
@@ -41,18 +41,30 @@ Please fill the form to create a project
     <!-- Shoutout Created --> 
     <div class="row">
         {% if shoutouts %}
+        <div class="col-md-10 text-center mb-5">
             {% for shoutout in shoutouts %}
-                <div class="card text-white bg-success md-5">
-                    <div class="card-header">Shoutout by {{shoutout.emp_appreciator.name}}</div>
+                <div class="card text-white bg-success mb-5">
+                    <div class="card-header">Shoutout by {{user_name}}</div>
                     <div class="card-body">
                     <h5 class="card-title">Shoutout to {{shoutout.emp_appreciated.name}}</h5>
                     <p class="card-text">{{shoutout.description}}</p>
+                    <form action={% url  'shoutout_like' shoutout.id %} method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info">
+                            Likes <span class="badge badge-light">{{shoutout.likes.count}}</span>
+                        </button>
+                    </form>
+
+                    <button class="btn btn-warning">
+                        <a href={% url "shoutout_comment" shoutout.id %}>Go to this Shoutout</a>
+                    </button>   
+                    <p class="card-text text-left">~ {{shoutout.timestamp}}</p>
                     </div>
                 </div>
             {% endfor %}
+        </div>
         {% endif %}
     </div>
-
 </div>
 {% endblock %}
 
