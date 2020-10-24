@@ -16,11 +16,19 @@ def create_project(request):
         project_description = request.POST['project_description']
         default_points = request.POST['default_points']
         deadline = request.POST['deadline']
-        project_file = request.POST['file_project']
-        Project.objects.create(name=project_name ,parent=user , description=project_description , default_pts=default_points , deadline=deadline , project_create_file = project_file)
+        c_points = request.POST['c_points']
+        b_points = request.POST['b_points']
+        project_file = request.POST['project_file']
+        total_points = int(default_points)+int(c_points)+int(b_points)
+        employee = Emp.objects.get(user=user)
+        parent , created = Parent.objects.get_or_create(emp=employee)
+        Project.objects.create(name=project_name, c_pts=c_points , b_pts= b_points ,parent=parent , description=project_description , default_pts=default_points , deadline=datetime.datetime.strptime(deadline, '%Y-%m-%dT%H:%M') , project_create_file = project_file , total=total_points)
         print('project created succesfully')
         context['flag'] = True
-        return HttpResponseRedirect(reverse ,name = 'create_project')
+        print(parent.emp.points , total_points)
+        parent.emp.points -= total_points
+        parent.emp.save()
+        return HttpResponseRedirect(reverse('create_project'))
     else:
         print('project created unsuccessful')
     return render(request , 'projects/project_create.html' , context)

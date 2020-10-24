@@ -5,5 +5,5 @@ from django.conf.urls.static import static
 from .views import shoutout_create
 
 urlpatterns = [
-    path('' , shoutout_create , 'shoutout_create'),
+    path('all/' , shoutout_create ,name = 'shoutout_create'),
 ]

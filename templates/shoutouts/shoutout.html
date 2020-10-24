@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Shoutout Posts
+
+{% endblock %}
+
+
+{% block header %}
+
+Please fill the form to create a project
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="POST">
+            <div class="form-group">
+                {% csrf_token %}
+                <input type="text" name = "employee_name", onkeyup="myFunction()" , placeholder= "Search for names whom you want to give a shoutout" , id="emplyee_name" style="width: 50%;">
+            </div>
+            <div class="form-group">
+                <ul id="myUL" style="list-style-type: none;">
+                    {% for employee in employees %}
+                        <li><a href="#">{{employee.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="form-group">
+                <label for="description">Enter the description of the shoutout</label>
+                <input style="display: block; width: 50%;" type="text" id="description" name="description" , placeholder="Write about the shoutout">
+            </div>
+            <div class="form-group">
+                <label for="points">Enter the points if you want to donate to the appreciator</label>
+                <input style="display: block; width: 50%;" type="number" name="points" id="points">
+            </div> 
+            <button type="submit" class="btn btn-primary mb-3 mt-5">Submit</button>
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+    </form>
+    <!-- Shoutout Created --> 
+    <div class="row">
+        {% if shoutouts %}
+            {% for shoutout in shoutouts %}
+                <div class="card text-white bg-success md-5">
+                    <div class="card-header">Shoutout by {{shoutout.emp_appreciator.name}}</div>
+                    <div class="card-body">
+                    <h5 class="card-title">Shoutout to {{shoutout.emp_appreciated.name}}</h5>
+                    <p class="card-text">{{shoutout.description}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script>
+    function myFunction(){
+        var input, filter, ul, li, option, i, txtValue;
+        input = document.getElementById("employee_name");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = document.getElementsByTagName("li");
+
+        for(i=0;i<li.length;i++){
+            option = li[i].getElementsByTagName("option")[0];
+            txtValue = option.textContent || option.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        } 
+    }
+</script>
+
+{% endblock %}
