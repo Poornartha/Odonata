@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
-from Client.models import Project , Emp , Team , Parent , Child , Submission
+from Client.models import Project , Emp , Team , Parent , Child , Submission, Points
 from django.utils import timezone
 import datetime
 
@@ -80,10 +80,13 @@ def accept_project(request , ppk , cpk):
                 if accepted_project == 'on':
                     print(project.default_pts , child.emp.points)    
                     if project.checksum < 1:    
-                        project.available_points = project.default_pts//3
+                        team = project.team
+                        children_count = len(list(team.child.all()))
+                        project.available_points = project.default_pts//children_count
                         project.checksum += 1
                     project.default_pts -= project.available_points
                     child.emp.points += project.available_points
+                    Points.objects.create(sender=project.parent.emp.user, receiver=child.emp.user, points=project.available_points, project=project)
                     child.emp.save()
                     project.save()
                     print(project.default_pts , child.emp.points , project.available_points)

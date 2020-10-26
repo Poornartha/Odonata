@@ -1,9 +1,10 @@
 from django.shortcuts import render, reverse
 from datetime import datetime
 from .models import Task, Tasksubmissionfile, Taskbid, Taskassigned, Tasksubmission
-from Client.models import Emp
+from Client.models import Emp, Points
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -244,6 +245,9 @@ def submission_accept(request, pk):
                     creator.save()
                     submitter.points += bid_points
                     submitter.save()
+                    creator_user = creator.user
+                    submitter_user = submitter.user
+                    Points.objects.create(sender=creator_user, reciever=submitter_user, points=bid_points, task=task)
                 else:
                     submission.accepted = False
                     submission.save()

@@ -47,19 +47,19 @@ def team_vote(request, pk):
                 vote_obj, create = Voting.objects.get_or_create(team=team, employee=emp_obj)
                 vote_obj.rank += i
                 vote_obj.save()
-                checksum_obj, created = Votechecksum.objects.get_or_create(vote=vote_obj)
-                checksum_obj.checksum += 1
-                checksum_obj.save()
-                if checksum_obj.checksum == (max_length + 1):
-                    minimal = Voting.objects.all().filter(team=team).order_by('rank')[0]
-                    min_emp = minimal.employee
-                    project = Project.objects.get(emp=min_emp)
-                    min_emp.points += project.c_pts
-                    min_emp.points += project.b_pts
-                    min_emp.save()
-                    project.c_pts = 0
-                    project.b_pts = 0
-                    project.save()
+            checksum_obj, created = Votechecksum.objects.get_or_create(team=team)
+            checksum_obj.checksum += 1
+            checksum_obj.save()
+            if checksum_obj.checksum == (max_length + 1):
+                minimal = Voting.objects.all().filter(team=team).order_by('rank')[0]
+                min_emp = minimal.employee
+                project = Project.objects.get(emp=min_emp)
+                min_emp.points += project.c_pts
+                min_emp.points += project.b_pts
+                min_emp.save()
+                project.c_pts = 0
+                project.b_pts = 0
+                project.save()
     else:
         context['valid'] = False
     return render(request, 'voting/team_vote.html', context)
