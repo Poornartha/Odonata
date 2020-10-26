@@ -7,7 +7,7 @@ class Voting(models.Model):
     rank = models.IntegerField(default=0)
 
 class Votechecksum(models.Model):
-    vote = models.OneToOneField(Voting, on_delete=models.CASCADE)
+    team = models.OneToOneField(Team, on_delete=models.CASCADE, null=True)
     checksum = models.IntegerField(default=0)
 
 

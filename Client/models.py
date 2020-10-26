@@ -7,9 +7,15 @@ class Organization(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     confirmed = models.BooleanField(default=False, editable=True)
     desigset = models.BooleanField(default=False, editable=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+
+class ParentProject(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    name = models.TextField()
 
 class Designation(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
@@ -57,6 +63,7 @@ class Team(models.Model):
 
 
 class Project(models.Model):
+    parentproject = models.ForeignKey(ParentProject, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=20 , blank=True , null=True)
     description = models.CharField(max_length=500)
     default_pts = models.IntegerField()
@@ -64,7 +71,7 @@ class Project(models.Model):
     c_pts = models.IntegerField()
     b_pts = models.IntegerField()
     total = models.IntegerField()
-    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE, null=True, blank=True)
     status = models.BooleanField(default=False)
     deadline = models.DateField(blank=True , null=True)
     team = models.OneToOneField(Team, on_delete = models.CASCADE, null =True)
@@ -72,17 +79,26 @@ class Project(models.Model):
     available_points = models.IntegerField(default = 0)
 
 
-'''class Voting(models.Model):
-     emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
-     team = models.OneToOneField(Team, on_delete = models.CASCADE)
-     project = models.OneToOneField(Project, on_delete = models.CASCADE)
-     total_pts = models.IntegerField()'''
+class Voting(models.Model):
+    emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
+    team = models.OneToOneField(Team, on_delete = models.CASCADE)
+    project = models.OneToOneField(Project, on_delete = models.CASCADE)
+    total_pts = models.IntegerField()
 
 class Submission(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
-    file_project = models.FileField(upload_to = 'files/', blank =True, null = True)
+    file_project = models.FileField(upload_to = 'files/', null = True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    after_deadline = models.BooleanField(default=False)
+    after_deadline = models.BooleanField(default=False, editable=True)
     status = models.BooleanField(default=False , editable=True)
+
+from Auction.models import Task
+class Points(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    reciever = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    points = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, blank=True)

@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, reverse
-from Client.models import Organization
+from Client.models import Organization, Submission
 from django.shortcuts import render
+from Client.models import Organization, Child, Team, Emp, Project, Parent, ParentProject, Points                   
 from django.http import HttpResponseRedirect
-from Client.models import Organization, Child, Team, Emp, Project, Parent
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
 from .models import Designation
+from datetime import datetime
+from django.utils import timezone
 
 
 # Create your views here.
@@ -93,3 +95,153 @@ def team_create(request , ppk):
         name = request.POST['name']
         
     return render(request, 'organization/team_create.html', context)
+
+
+def org_create_project(request):
+    user = request.user
+    context = {}
+    context['valid'] = True
+    if user.is_active:
+        try:
+            organization = Organization.objects.get(user=user)
+        except:
+            organization = None
+        if organization:
+            if request.method == "POST":
+                name = request.POST['name']
+                description = request.POST['description']
+                try:
+                    file_instance = request.POST['file']
+                except:
+                    file_instance = None
+                deadline = request.POST['deadline']
+                points = request.POST['points']
+                c_points = request.POST['c_points']
+                b_points = request.POST['b_points']
+                parent_project = ParentProject.objects.create(organization=organization, name=name)
+                if file_instance:
+                    project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, project_create_file=file_instance, c_pts=c_points, b_pts=b_points, total=points + c_points + b_points, deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'))
+                else:
+                    project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, c_pts=c_points, b_pts=b_points, total=points + c_points + b_points, deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'))
+        else:
+            context['valid'] = False
+    else:
+        context['valid'] = False
+    return render(request, 'organization/create_project.html', context)
+
+def org_project_accept(request, pk):
+        user = request.user
+        context = {}
+        context['valid'] = True
+        if user.is_active:
+            try:
+                organization = Organization.objects.get(user=user)
+            except:
+                context['valid'] = False
+                organization = None
+            if organization:
+                submission = Submission.objects.get(id=pk)
+                creator = submission.project.parentproject.organization
+                if organization == creator:
+                    submission_file = submission.file_project
+                    context['submission'] = submission
+                    context['file'] = submission_file
+                    context['project'] = submission.project
+                    accepted_val = False
+                    if request.method == "POST":
+                        try:
+                            accepted = request.POST['accepted']
+                            accepted_val = True
+                        except:
+                            accepted_val = False
+            
+                        if accepted_val:
+                            submission.status = True
+                            submission.save()
+                            submission.project.status = True
+                            submission.project.save()
+                            creator = submission.project.parentproject.organization
+                            submitter = submission.child.emp
+                            submitter.points += submission.project.default_pts // 3
+                            Points.objects.create(sender=creator.user, reciever=submitter.user, points = submission.project.default_pts // 3, project = submission.project)
+                            if submission.project.deadline > timezone.now().date():
+                                submission.after_deadline = True
+                            submitter.save()
+                        else:
+                            submission.accepted = False
+                            submission.save()
+                            submission.project.status = True
+                            submission.project.save()
+                else:
+                    context['message'] = "You are not the creator of this project."
+                    context['valid'] = False
+        else:
+            context['valid'] = False
+        return render(request, 'organization/submission_accept.html', context)
+
+def org_submission_list(request, pk):
+    user = request.user
+    context = {}
+    context['valid'] = True
+    if user.is_active:
+        organization = Organization.objects.get(user=user)
+        project = Project.objects.get(id=pk)
+        if organization == project.parentproject.organization:
+            submission_list = Submission.objects.all().filter(project=project)
+            context['submissions'] = submission_list
+            context['project'] = project
+        else:
+            context['message'] = "This Project is not been created to you."
+            context['created'] = True
+    else:
+        context['valid'] = False
+    return render(request, 'organization/submission_list.html', context)
+
+# Parent Project List
+def parent_project_list(request):
+    user = request.user
+    context = {}
+    context['valid'] = True
+    if user.is_active:
+        try:
+            organization = Organization.objects.get(user=user)
+        except:
+            organization = None
+        if organization:
+            parentprojects = organization.parentproject_set.all()
+            context['projects'] = parentprojects
+            context['organization'] = organization
+        else:
+            context['valid'] = False
+    else:
+        context['valid'] = False
+    return render(request, 'organization/parent_list.html', context)
+
+
+# List of Projects in Parent Project
+
+def org_projects_list(request, pk):
+    user = request.user
+    context = {}
+    context['valid'] = True
+    context['notyours'] = False
+    if user.is_active:
+        try:
+            organization = Organization.objects.get(user=user)
+        except:
+            organization = None
+        if organization:
+            parentproject = ParentProject.objects.get(id=pk)
+            if parentproject in organization.parentproject_set.all():
+                context['projects'] = parentproject.project_set.all()
+                context['parent'] = parentproject
+                context['organization'] = organization
+            else:
+                context['notyours'] = True
+        else:
+            context['valid'] = False
+    else:
+        context['valid'] = False
+    return render(request, 'organization/project_list.html', context)
+
+            
