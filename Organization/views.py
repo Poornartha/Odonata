@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from Client.models import Organization, Submission
 from django.shortcuts import render
 from Client.models import Organization, Child, Team, Emp, Project, Parent, ParentProject, Points                   
+from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
 from .models import Designation
@@ -51,7 +52,7 @@ def org_create(request):
                 else:
                     user = User.objects.create_user(username=username, email=email, password=password)
                     organization = Organization.objects.create(name=user.username, description=description, user=user)
-                    return redirect('org_login')
+                return HttpResponseRedirect(reverse('org_login'))
     else:
         context['valid1'] = False
     return render(request, 'organization/org_create.html', context)

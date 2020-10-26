@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings 
 from django.conf.urls.static import static
 import Organization, Candidate, Auction, Voting, Leaderboard, Home
+import Organization, Projects , Shoutout, Voting , Auction , Candidate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('organization/', include('Organization.urls')),
     path('employee/', include('Candidate.urls')),
     path('auction/', include('Auction.urls')),
+    path('shoutout/' , include('Shoutout.urls')),
     path('voting/', include('Voting.urls')),
     path('leaderboard/', include('Leaderboard.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
