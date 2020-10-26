@@ -39,7 +39,8 @@ def shoutout_create(request):
         print(shoutout_list,user)
         if request.method =="POST":
             employee_name = request.POST['employee_name']
-            employee_appreciated = Emp.objects.get(name=employee_name , organization=employee.organization.id)
+            print(employee_name)
+            employee_appreciated = Emp.objects.get(id = employee_name , organization=employee.organization)
             description = request.POST['description']
             timestamp = datetime.datetime.now()
             points = request.POST['points']
@@ -85,4 +86,17 @@ def shoutout_like(request , spk):
         else:
             shoutout.likes.add(user)
         return HttpResponseRedirect(reverse('shoutout_create'))
-        
+
+def comment_like(request , cpk , spk):
+    
+    
+    comment = Comment.objects.get(id = cpk)
+    user = request.user
+    
+    if user.is_active:
+        if user in comment.likes.all():
+            comment.likes.remove(user)
+        else:
+            comment.likes.add(user)
+    return HttpResponseRedirect(reverse('shoutout_comment' , args=[str(spk) ]))
+   
