@@ -1,7 +1,5 @@
 from django.urls import path
-
-
-from .views import org_login, org_architecture, team_create,  voting
+from .views import org_create, org_login, org_architecture, team_create
 
 
 urlpatterns = [
@@ -10,7 +8,7 @@ urlpatterns = [
     path('designation/', org_architecture, name="org_architecture"),
     path('team_create/<int:ppk>', team_create, name="team_create"),
 
-    path('voting/<int:ppk>', voting, name="voting"),
+    
 
 
 ]
