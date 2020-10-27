@@ -292,13 +292,13 @@ body {
               
                 <div class="comment-box ">
                     <div class="comment-head ">
-                        <h6 class="comment-name ">Shoutout by {{user.name}}</h6>
-                        <span><p>~ {{shoutout.timestamp}}</p></span>
+                        <h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout by {{shoutouts.emp_appreciator}}</h5>
+                        <span><p>~ {{shoutouts.timestamp}}</p></span>
                     </div>
 
                     <div class="comment-content">
-                        <h6 class="comment-name ">Shoutout to {{shoutouts.emp_appreciated.name}}</h6>
-                        {{shoutouts.description}}
+                        <h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout to {{shoutouts.emp_appreciated.name}}</h5>
+                        <p style="font-family: sans-serif;">{{shoutouts.description}}</p>
                     </div>
 
                     <form action={% url  'shoutout_comment' shoutouts.id %} method="POST">
@@ -310,17 +310,17 @@ body {
 
                         {% for comment in comments %}
 
-                        <div class="comment-content">
+                        <div class="comment-content" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
                            {{comment.comment}}
                            <p style="text-align:left">{{comment.timestamp}}</p>
                         </div>
                      
                     </form>
             
-                    <form action={% url  'comment_like' comment.id %} method="POST">
+                    <form action={% url  'comment_like' shoutouts.id comment.id %} method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-info">
-                            Likes <span class="badge badge-light">{{comment.likes.count}}</span>
+                            Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);" >{{comment.likes.count}}</span>
                         </button>
                     </form>
                     {% endfor %}   
