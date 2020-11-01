@@ -10,7 +10,15 @@
 <body>
 
     <!-- Navigation -->
-    {% include 'partials/_navbar.html' %}
+    {% if user.is_active %}
+    {% if organization %}
+        {% include 'partials/_navbar_organization.html' %}
+    {% else %}
+        {% include 'partials/_navbar_emp.html' %}
+    {% endif %}
+    {% else %}
+    {% include 'partials/_navbar_ano.html' %}
+    {% endif %}
 
     <!-- Heading -->
     <div class="col-md-10 mx-auto text-center mt-5 mb-5 h3">

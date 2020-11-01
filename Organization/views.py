@@ -16,6 +16,7 @@ def org_login(request):
     user = request.user
     context = {}
     context['valid1'] = True
+    context['organization'] = True
     if not user.is_active:
         if request.method == "POST":
             username = request.POST['username']
@@ -35,6 +36,7 @@ def org_create(request):
     user = request.user
     context = {}
     context['valid1'] = True
+    context['organization'] = True
     if not user.is_active:
         if request.method == "POST":
             username = request.POST['username']
@@ -62,6 +64,7 @@ def org_architecture(request):
     user = request.user
     organization = Organization.objects.get(user=user) or None
     print(organization.confirmed)
+    context['organization'] = True
     if organization.confirmed == True and organization.desigset == False:
         context['valid'] = True
         if request.method == "POST":
@@ -101,6 +104,7 @@ def org_create_project(request):
     user = request.user
     context = {}
     context['valid'] = True
+    context['organization'] = True
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)
@@ -133,6 +137,7 @@ def org_project_accept(request, pk):
         user = request.user
         context = {}
         context['valid'] = True
+        context['organization'] = True
         if user.is_active:
             try:
                 organization = Organization.objects.get(user=user)
@@ -183,6 +188,7 @@ def org_submission_list(request, pk):
     user = request.user
     context = {}
     context['valid'] = True
+    context['organization'] = True
     if user.is_active:
         organization = Organization.objects.get(user=user)
         project = Project.objects.get(id=pk)
@@ -202,6 +208,7 @@ def parent_project_list(request):
     user = request.user
     context = {}
     context['valid'] = True
+    context['organization'] = True
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)
@@ -225,6 +232,7 @@ def org_projects_list(request, pk):
     context = {}
     context['valid'] = True
     context['notyours'] = False
+    context['organization'] = True
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)

@@ -40,7 +40,7 @@ def submit_project(request , ppk ,tpk):
     team = Team.objects.get(id = tpk)
     user = request.user
     employee = Emp.objects.get(user = user)
-    child = Child.objects.get(emp=employee , parent=project.parent)
+    child = Child.objects.get(emp=employee)
     if child in team.child.all():
         if request.method == 'POST':
             project_file = request.FILES['project_file']
