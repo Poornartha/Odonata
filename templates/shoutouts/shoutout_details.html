@@ -317,7 +317,7 @@ body {
                     <form action={% url  'comment_like' shoutouts.id comment.id %} method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-info">
-                            Likes <span class="badge badge-light">{{comment.likes.count}}</span>
+                            Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);" >{{comment.likes.count}}</span>
                         </button>
                     </form>
                     {% endfor %}   

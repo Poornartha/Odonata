@@ -2,11 +2,34 @@
 {% load static %}
 
 {% block title %} 
+Home
 {% endblock %}
-
 
 {% block content %}
 
-<h1>Home</h1>
+<img src="{% static "images/home4.png" %}" alt="" style="height: 0%;width: 100%;">
+
+<div class="container col md-5">
+    <div class="block mt-5 mx-5" >
+        <div class="row">
+          <div style="margin-right:10px;">
+            <img src="{% static "images/sticker1.png" %}" class="border rounded" style="height: 90%;width: 30%;float: left;margin-right: 5%;">
+            <h5 class="align-middle mt-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti possimus temporibus atque nihil eum odio. Quam explicabo aperiam ab tempora deleniti veniam ipsum natus quibusdam saepe temporibus officia, ullam, nulla tempore placeat! Unde asperiores modi nihil aperiam. Voluptates quos assumenda esse nesciunt amet, exercitationem quia doloremque repudiandae, delectus cumque veniam.</h5>
+          </div>
+       </div>
+    </div>    
+
+    <div class="block mt-5 mx-5" >
+        <div class="row">
+            <div style="margin-left:10px;">
+                <img src="{% static "images/sticker2.png" %}" class="border rounded" style="height: 90%;width: 30%;float: right;margin-right: 5%;">
+                <h5 class="align-middle mt-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti possimus temporibus atque nihil eum odio. Quam explicabo aperiam ab tempora deleniti veniam ipsum natus quibusdam saepe temporibus officia, ullam, nulla tempore placeat! Unde asperiores modi nihil aperiam. Voluptates quos assumenda esse nesciunt amet, exercitationem quia doloremque repudiandae, delectus cumque veniam.</h5>
+            </div>
+        </div>
+    </div>    
+    <div class="col-md-10 mx-auto mt-5 mb-5" style="background-color: thistle;">
+        <h5 class="text-center" style="size: 20px;color:rgb(27, 21, 29);font-family: 'Courier New', Courier, monospace;display: block;">~WE MAKE THE TEAMWORK MATTER</h5>
+    </div>    
+</div>
 
 {% endblock %}

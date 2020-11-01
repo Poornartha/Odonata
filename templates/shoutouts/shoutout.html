@@ -315,23 +315,22 @@ body {
         {% for shoutout in shoutouts %}
         <li>
             <div class="comment-main-level">
-              
                 <div class="comment-box ">
                     <div class="comment-head ">
-                        <h6 class="comment-name ">Shoutout by {{user_name}}</h6>
+                        <h6 class="comment-name" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout by {{shoutout.emp_appreciator}}</h6>
                         <span><p>~ {{shoutout.timestamp}}</p></span>
                     </div>
 
                     <div class="comment-content">
-                        <h6 class="comment-name ">Shoutout to {{shoutout.emp_appreciated.name}} :</h6>
-                        {{shoutout.description}}
+                        <h6 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout to {{shoutout.emp_appreciated.name}} :</h6>
+                        <p style="font-family: sans-serif;">{{shoutout.description}}</p>
                     </div>
 					<div style = "display : flex;">
 					
                     <form action={% url  'shoutout_like' shoutout.id %} method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-info">
-                            Likes <span class="badge badge-light">{{shoutout.likes.count}}</span>
+                            Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);">{{shoutout.likes.count}}</span>
                         </button>
                     </form>
 					<a class = "btn btn-info ml-3" href={% url "shoutout_comment" shoutout.id %}>Go to this Shoutout</a>
