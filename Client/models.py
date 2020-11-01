@@ -79,12 +79,6 @@ class Project(models.Model):
     available_points = models.IntegerField(default = 0)
 
 
-class Voting(models.Model):
-    emp = models.OneToOneField(Emp, on_delete = models.CASCADE )
-    team = models.OneToOneField(Team, on_delete = models.CASCADE)
-    project = models.OneToOneField(Project, on_delete = models.CASCADE)
-    total_pts = models.IntegerField()
-
 class Submission(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
