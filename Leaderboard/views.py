@@ -139,12 +139,15 @@ def points_chart_data(request):
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)
+            print('organization',organization)
         except:
             try:
                 employee = Emp.objects.get(user=user)
                 organization = employee.organization
+                print('organizzation of employee',organization)
             except:
                 organization = None
+        print(organization)
         if organization:
             days = datetime.timedelta(days=30)
             current = timezone.now()
@@ -155,6 +158,7 @@ def points_chart_data(request):
                     if current - point.timestamp < days:
                         total += point.points
                 data.append({emp.user.username: total})
+    print(data)
     return JsonResponse(data, safe=False)
 
 
@@ -202,4 +206,3 @@ def emp_progress(request):
 
 def emp_progress_chart(request):
     return render(request, 'leaderboard/emp_chart.html')
-        
