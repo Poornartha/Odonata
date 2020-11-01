@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from Client.models import Project , Emp , Team , Parent , Child , Submission, Points
 from django.utils import timezone
 import datetime
-
+from Organization.urls import team_create
 # Create your views here.
 
 def create_project(request):
@@ -28,7 +28,7 @@ def create_project(request):
         print(parent.emp.points , total_points)
         parent.emp.points -= total_points
         parent.emp.save()
-        return HttpResponseRedirect(reverse('create_project'))
+        return HttpResponseRedirect(reverse('team_create'))
     else:
         print('project created unsuccessful')
     return render(request , 'projects/project_create.html' , context)
