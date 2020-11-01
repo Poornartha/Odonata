@@ -29,6 +29,7 @@ class Emp(models.Model):
     name = models.CharField(max_length= 50)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE , default='')
     doj = models.DateTimeField(auto_now_add = True)
+    doj_testing = models.DateTimeField(null=True, blank=True)
     dob = models.DateTimeField()
     age = models.IntegerField(null=True)
     user = models.OneToOneField(User,on_delete = models.CASCADE)
@@ -74,7 +75,7 @@ class Project(models.Model):
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE, null=True, blank=True)
     status = models.BooleanField(default=False)
     deadline = models.DateField(blank=True , null=True)
-    team = models.OneToOneField(Team, on_delete = models.CASCADE, null =True)
+    team = models.ForeignKey(Team, on_delete = models.CASCADE, null =True)
     checksum = models.IntegerField(default = 0)
     available_points = models.IntegerField(default = 0)
 
@@ -85,6 +86,7 @@ class Submission(models.Model):
     file_project = models.FileField(upload_to = 'files/', null = True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
+    testing_timestamp = models.DateTimeField(null=True, blank=True)
     after_deadline = models.BooleanField(default=False, editable=True)
     status = models.BooleanField(default=False , editable=True)
 

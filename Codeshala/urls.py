@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings 
 from django.conf.urls.static import static
 import Organization, Candidate, Auction, Voting, Leaderboard, Home
-import Organization, Projects , Shoutout, Voting , Auction , Candidate
+import Organization, Projects , Shoutout, Voting , Auction , Candidate, Chat
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +30,7 @@ urlpatterns = [
     path('shoutout/' , include('Shoutout.urls')),
     path('voting/', include('Voting.urls')),
     path('leaderboard/', include('Leaderboard.urls')),
+    path('chat/', include('Chat.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
