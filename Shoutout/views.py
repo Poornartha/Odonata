@@ -45,7 +45,7 @@ def shoutout_create(request):
             timestamp = datetime.datetime.now()
             points = request.POST['points']
             print('points:',points)
-            if points != '':
+            if points != '0':
                 if int(points) <= employee.points:
                     employee.points -= int(points)
                     employee_appreciated.points += int(points)
