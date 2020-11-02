@@ -28,7 +28,7 @@ def create_project(request):
         print(parent.emp.points , total_points)
         parent.emp.points -= total_points
         parent.emp.save()
-        return HttpResponseRedirect(reverse('create_project'))
+        return HttpResponseRedirect(reverse('display_project'))
     else:
         print('project created unsuccessful')
     return render(request , 'projects/project_create.html' , context)
@@ -94,7 +94,7 @@ def accept_project(request , ppk , cpk):
                         project.checksum += 1
                     project.default_pts -= project.available_points
                     child.emp.points += project.available_points
-                    Points.objects.create(sender=project.parent.emp.user, receiver=child.emp.user, points=project.available_points, project=project)
+                    Points.objects.create(sender=project.parent.emp.user, reciever=child.emp.user, points=project.available_points, project=project)
                     child.emp.save()
                     project.save()
                     print(project.default_pts , child.emp.points , project.available_points)
@@ -132,7 +132,10 @@ def display_project(request):
                 projects = Project.objects.filter(team = team)
                 for project in projects:
                     project_list_child.append(project)
-                    submission = Submission.objects.get(child = child , team = team , project = project)
+                    try:
+                        submission = Submission.objects.get(child = child , team = team , project = project)
+                    except:
+                        submission = []
                 context['projects_children'] = project_list_child
                 context['submissions'] = submission
     return render(request , 'projects/project_display.html' , context)

@@ -274,66 +274,56 @@ body {
 		width: 320px;
 	}
 }
+
 </style>
 
 
 <div class="comments-container">
+	<div class="row">
+		<a href={% url "shoutout_create" %} class="display block" style="text-decoration: none; display: block; background-color: block; "> <button style="background-color: rgb(250, 135, 135);" class="border rounded">  << Go to Shoutouts  </button></a>
+			<ul id="comments-list" class="comments-list">
+				<li>
+					<div class="comment-main-level">
+				
+						<div class="comment-box ">
+							<div class="comment-head ">
+								<h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout by {{shoutouts.emp_appreciator}}</h5>
+								<span><p>~ {{shoutouts.timestamp}}</p></span>
+							</div>
 
-    
+							<div class="comment-content">
+								<h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout to {{shoutouts.emp_appreciated.name}}</h5>
+								<p style="font-family: sans-serif;">{{shoutouts.description}}</p>
+							</div>
 
+							<form action={% url  'shoutout_comment' shoutouts.id %} method="POST">
+								{% csrf_token %}
+								<input type="text" name="comment" id="comment" placeholder="Enter your comment">
+								<button type="submit" class="btn btn-warning">
+									Comment
+								</button>
 
-    
-<div class="row">
-    <ul id="comments-list" class="comments-list">
-     
-        
-        <li>
-            <div class="comment-main-level">
-              
-                <div class="comment-box ">
-                    <div class="comment-head ">
-                        <h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout by {{shoutouts.emp_appreciator}}</h5>
-                        <span><p>~ {{shoutouts.timestamp}}</p></span>
-                    </div>
+								{% for comment in comments %}
 
-                    <div class="comment-content">
-                        <h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout to {{shoutouts.emp_appreciated.name}}</h5>
-                        <p style="font-family: sans-serif;">{{shoutouts.description}}</p>
-                    </div>
-
-                    <form action={% url  'shoutout_comment' shoutouts.id %} method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="comment" id="comment" placeholder="Enter your comment">
-                        <button type="submit" class="btn btn-warning">
-                            Comment
-                        </button>
-
-                        {% for comment in comments %}
-
-                        <div class="comment-content" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
-                           {{comment.comment}}
-                           <p style="text-align:left">{{comment.timestamp}}</p>
-                        </div>
-                     
-                    </form>
-            
-                    <form action={% url  'comment_like' shoutouts.id comment.id %} method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-info">
-                            Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);" >{{comment.likes.count}}</span>
-                        </button>
-                    </form>
-                    {% endfor %}   
+								<div class="comment-content" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+								{{comment.comment}}
+								<p style="text-align:left">{{comment.timestamp}}</p>
+								</div>
+							
+							</form>
 					
-                
-
-                </div>
-            </div>
-        </li>
-       
-    </ul>
+							<form action={% url  'comment_like' shoutouts.id comment.id %} method="POST">
+								{% csrf_token %}
+								<button type="submit" class="btn btn-info">
+									Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);" >{{comment.likes.count}}</span>
+								</button>
+							</form>
+							{% endfor %}
+						</div>
+					</div>
+				</li>
+			</ul>
     </div>
 </div>
-
 {% endblock %}
 
