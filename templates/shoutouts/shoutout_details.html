@@ -6,7 +6,9 @@ Shoutout Reply
 
 
 {% block header %}
+Comments 
 {% endblock %}
+
 
 {% block content %}
 <style>
@@ -276,13 +278,8 @@ body {
 }
 </style>
 
-
+<div class="container mb-5 pb-2 pt-1" style="background-color:#ecf0f1;">
 <div class="comments-container">
-
-    
-
-
-    
 <div class="row">
     <ul id="comments-list" class="comments-list">
      
@@ -292,25 +289,25 @@ body {
               
                 <div class="comment-box ">
                     <div class="comment-head ">
-                        <h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout by {{shoutouts.emp_appreciator}}</h5>
-                        <span><p>~ {{shoutouts.timestamp}}</p></span>
+                        <h6 class="comment-name ">Shoutout by {{shoutouts.emp_appreciator.username}}</h6>
+                        <span><p> ~ {{shoutouts.timestamp}}</p></span>
                     </div>
-
+					
                     <div class="comment-content">
-                        <h5 class="comment-name " style="font-family: Verdana, Geneva, Tahoma, sans-serif;">Shoutout to {{shoutouts.emp_appreciated.name}}</h5>
-                        <p style="font-family: sans-serif;">{{shoutouts.description}}</p>
+                        <h6 class="comment-name ">Shoutout to {{shoutouts.emp_appreciated.name}}</h6>
+						{{shoutouts.description}}
                     </div>
 
                     <form action={% url  'shoutout_comment' shoutouts.id %} method="POST">
                         {% csrf_token %}
-                        <input type="text" name="comment" id="comment" placeholder="Enter your comment">
-                        <button type="submit" class="btn btn-warning">
+                        <input type="text" class="ml-5 mt-3 p-1 border rounded border-info" name="comment" id="comment" placeholder="Enter your comment">
+                        <button type="submit" class="btn btn-outline-success ml-3">
                             Comment
                         </button>
 
                         {% for comment in comments %}
 
-                        <div class="comment-content" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                        <div class="comment-content mt-3">
                            {{comment.comment}}
                            <p style="text-align:left">{{comment.timestamp}}</p>
                         </div>
@@ -334,6 +331,6 @@ body {
     </ul>
     </div>
 </div>
-
+</div>
 {% endblock %}
 

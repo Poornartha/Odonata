@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Codeshala</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{}">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Leaderboard
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href={% url 'weekly_lead' %} target="_blank">Weekly</a>
+          <a class="dropdown-item" href={% url 'yearly_lead' %} target="_blank">Quaterly</a>
+          <a class="dropdown-item" href={% url 'quaterly_lead' %} target="_blank">Yearly</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Projects
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href={% url 'parent_project_list' %} target="_blank">Parent Projects</a>
+          <a class="dropdown-item" href={% url 'org_create_project' %} target="_blank">Create Project</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Analysis
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href={% url 'points_chart' %} target="_blank">Employee Points</a>
+          <a class="dropdown-item" href={% url 'teams_chart' %} target="_blank">Team Points</a>
+        </div>
+      </li>
+    </ul>
+    {% if user.is_active %}
+    <a href='#' class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
+    {% else %}
+    <a href={% url 'emp_login' %} class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
+    {% endif %}
+  </div>
+</nav>
