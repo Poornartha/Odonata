@@ -92,7 +92,6 @@ def assigned_tasks(request):
         employee = Emp.objects.get(user=user)
         assigned_tasks_incomplete = employee.task_set.all().filter(assigned=True, completed=False).order_by('-timestamp')
         assigned_tasks_complete = employee.task_set.all().filter(assigned=True, completed=True).order_by('-timestamp')
-        
         incomplete = []
         complete = []
         print('Assigned:',assigned_tasks_complete)
