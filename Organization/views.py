@@ -8,6 +8,9 @@ from django.contrib import messages, auth
 from .models import Designation
 from datetime import datetime
 from django.utils import timezone
+from Candidate.urls import emp_login
+from Home.urls import home
+
 
 
 # Create your views here.
@@ -16,6 +19,7 @@ def org_login(request):
     user = request.user
     context = {}
     context['valid1'] = True
+    context['organization'] = True
     if not user.is_active:
         if request.method == "POST":
             username = request.POST['username']
@@ -35,6 +39,7 @@ def org_create(request):
     user = request.user
     context = {}
     context['valid1'] = True
+    context['organization'] = True
     if not user.is_active:
         if request.method == "POST":
             username = request.POST['username']
@@ -62,6 +67,7 @@ def org_architecture(request):
     user = request.user
     organization = Organization.objects.get(user=user) or None
     print(organization.confirmed)
+    context['organization'] = True
     if organization.confirmed == True and organization.desigset == False:
         context['valid'] = True
         if request.method == "POST":
@@ -84,16 +90,37 @@ def org_architecture(request):
 
 def team_create(request , ppk):
     context = {}
-    project = Project.objects.get(id = ppk)
-    context['project'] = project
     user = request.user
-    employee = Emp.objects.get(user = user)
-    parent = Parent.objects.get(emp = employee)
-    children = Child.objects.filter(parent = parent)
-    context['children'] = children
-    if request.method == 'POST':
-        name = request.POST['name']
+    if user.is_authenticated:
+        project = Project.objects.get(id = ppk)
+        context['project'] = project
+       
+        employee = Emp.objects.get(user = user)
+        parents = Parent.objects.get(emp = employee)
         
+        children = Child.objects.filter(parent = parents)
+        
+
+        context['children'] = children
+        print(children)
+        
+        if request.method == 'POST':
+            team_name = request.POST['team_name']
+            name1 = request.POST['name1']
+            name2 = request.POST['name2']
+            name3 = request.POST['name3']
+            name4 = request.POST['name4']
+
+            team = Team.objects.create(name = team_name, parent = parents)
+            team.child.add(name1)
+            team.child.add(name2)
+            team.child.add(name3)
+            team.child.add(name4)
+            return HttpResponseRedirect(reverse('home'))
+    else:
+        return HttpResponseRedirect(reverse('emp_login'))
+
+    
     return render(request, 'organization/team_create.html', context)
 
 
@@ -101,6 +128,7 @@ def org_create_project(request):
     user = request.user
     context = {}
     context['valid'] = True
+    context['organization'] = True
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)
@@ -133,6 +161,7 @@ def org_project_accept(request, pk):
         user = request.user
         context = {}
         context['valid'] = True
+        context['organization'] = True
         if user.is_active:
             try:
                 organization = Organization.objects.get(user=user)
@@ -183,6 +212,7 @@ def org_submission_list(request, pk):
     user = request.user
     context = {}
     context['valid'] = True
+    context['organization'] = True
     if user.is_active:
         organization = Organization.objects.get(user=user)
         project = Project.objects.get(id=pk)
@@ -202,6 +232,7 @@ def parent_project_list(request):
     user = request.user
     context = {}
     context['valid'] = True
+    context['organization'] = True
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)
@@ -225,6 +256,7 @@ def org_projects_list(request, pk):
     context = {}
     context['valid'] = True
     context['notyours'] = False
+    context['organization'] = True
     if user.is_active:
         try:
             organization = Organization.objects.get(user=user)

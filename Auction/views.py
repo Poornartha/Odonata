@@ -27,6 +27,7 @@ def create_task(request):
                 task = Task.objects.create(name=name, description=description, creator=employee, max_reward=max_points, attachment=file_obj, deadline=deadline)
             else:
                 task = Task.objects.create(name=name, description=description, creator=employee, max_reward=max_points, deadline=deadline)
+            return HttpResponseRedirect(reverse('task_list'))
     else:
         context['valid'] = False
         context['message'] = "Please login To Continue"
@@ -94,11 +95,12 @@ def assigned_tasks(request):
         
         incomplete = []
         complete = []
-
+        print('Assigned:',assigned_tasks_complete)
+        print(assigned_tasks_incomplete)
         for task in assigned_tasks_incomplete:
             incomplete.append((task, task.taskassigned_set.all()))
 
-        for task in assigned_tasks_incomplete:
+        for task in assigned_tasks_complete:
             complete.append((task, task.taskassigned_set.all()))
         
         context['incomplete_tasks'] = incomplete
@@ -124,6 +126,8 @@ def my_assignment(request):
                 incomplete_tasks.append((atask.task, atask))
         context['incomplete_tasks'] = incomplete_tasks
         context['completed_tasks'] = completed_tasks
+        print('Incomplete',incomplete_tasks)
+        print('complete',completed_tasks)
         return render(request, 'auction/my_tasks.html', context)
     else:
         context['valid'] = False
@@ -162,6 +166,7 @@ def create_submission(request, pk):
                 for file_inst in [file1, file2, file3]:
                     if file_inst:
                         Tasksubmissionfile.objects.create(submission=submission, file_item=file_inst)
+                return HttpResponseRedirect(reverse('my_assignment'))
         else:
             context['valid'] = False
     else:
@@ -222,7 +227,10 @@ def submission_accept(request, pk):
             context['submission'] = submission
             context['files'] = submission_files
             task = submission.assignment.task
+            task_assigned = Taskassigned.objects.get(task = task)
+            print(task_assigned)
             context['task'] = task
+            print(task.id)
             accepted_val = False
             if request.method == "POST":
                 try:
@@ -248,6 +256,7 @@ def submission_accept(request, pk):
                     creator_user = creator.user
                     submitter_user = submitter.user
                     Points.objects.create(sender=creator_user, reciever=submitter_user, points=bid_points, task=task)
+                    return HttpResponseRedirect(reverse('task_submission_list' , args = [int(task_assigned.id)]))
                 else:
                     submission.accepted = False
                     submission.save()

@@ -7,6 +7,7 @@ from django.contrib import auth
 from django.http import HttpResponseRedirect
 from Home.urls import home
 
+
 # Create your views here.
 def emp_create(request):
     context = {}
@@ -66,10 +67,11 @@ def emp_login(request):
             if user is not None:
                 auth.login(request, user)
             else:
-                context['message'] = "Please check you Username / Password and Try Again"
+                context['message'] = "Please check your Username / Password and Try Again"
             return HttpResponseRedirect(reverse('home'))
     else:
         context['valid1'] = False
+    
     return render(request, 'candidate/emp_login.html', context)
 
 def emp_child_list(request):

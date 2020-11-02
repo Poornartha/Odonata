@@ -6,7 +6,9 @@ Shoutout Reply
 
 
 {% block header %}
+Comments 
 {% endblock %}
+
 
 {% block content %}
 <style>
@@ -277,8 +279,9 @@ body {
 
 </style>
 
-
+<div class="container mb-5 pb-2 pt-1" style="background-color:#ecf0f1;">
 <div class="comments-container">
+<<<<<<< HEAD
 	<div class="row">
 		<a href={% url "shoutout_create" %} class="display block" style="text-decoration: none; display: block; background-color: block; "> <button style="background-color: rgb(250, 135, 135);" class="border rounded">  << Go to Shoutouts  </button></a>
 			<ul id="comments-list" class="comments-list">
@@ -311,6 +314,49 @@ body {
 								</div>
 							
 							</form>
+=======
+<div class="row">
+    <ul id="comments-list" class="comments-list">
+     
+        
+        <li>
+            <div class="comment-main-level">
+              
+                <div class="comment-box ">
+                    <div class="comment-head ">
+                        <h6 class="comment-name ">Shoutout by {{shoutouts.emp_appreciator.username}}</h6>
+                        <span><p> ~ {{shoutouts.timestamp}}</p></span>
+                    </div>
+					
+                    <div class="comment-content">
+                        <h6 class="comment-name ">Shoutout to {{shoutouts.emp_appreciated.name}}</h6>
+						{{shoutouts.description}}
+                    </div>
+
+                    <form action={% url  'shoutout_comment' shoutouts.id %} method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="ml-5 mt-3 p-1 border rounded border-info" name="comment" id="comment" placeholder="Enter your comment">
+                        <button type="submit" class="btn btn-outline-success ml-3">
+                            Comment
+                        </button>
+
+                        {% for comment in comments %}
+
+                        <div class="comment-content mt-3">
+                           {{comment.comment}}
+                           <p style="text-align:left">{{comment.timestamp}}</p>
+                        </div>
+                     
+                    </form>
+            
+                    <form action={% url  'comment_like' shoutouts.id comment.id %} method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info">
+                            Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);" >{{comment.likes.count}}</span>
+                        </button>
+                    </form>
+                    {% endfor %}   
+>>>>>>> 64ee9c31913e2b2c606cbe66c97b35b81d1417e4
 					
 							<form action={% url  'comment_like' shoutouts.id comment.id %} method="POST">
 								{% csrf_token %}
@@ -325,5 +371,9 @@ body {
 			</ul>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+</div>
+>>>>>>> 64ee9c31913e2b2c606cbe66c97b35b81d1417e4
 {% endblock %}
 

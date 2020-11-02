@@ -284,6 +284,7 @@ body {
 </style>
 
 
+<div class="container p-5 mb-5" style="background-color:#ecf0f1;">	
 <div class="comments-container">
 
     
@@ -325,7 +326,7 @@ body {
                         <p style="font-family: sans-serif;">{{shoutout.description}}</p>
                     </div>
 					<div style = "display : flex;">
-						
+					
                     <form action={% url  'shoutout_like' shoutout.id %} method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-info">
@@ -343,7 +344,7 @@ body {
            
         {% endif %}
     </div>
-
+</div>
 {% endblock %}
 
 {% block script %}

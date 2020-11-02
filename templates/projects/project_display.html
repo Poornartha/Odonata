@@ -16,9 +16,10 @@ Please select the project you want to see
 
 {% block content %}
 <div class="container">
-    <h2 class="card-title">The parent projects you are part of</h2>
+    {% if projects_parents %}
+    <h2 class="card-title" align="center">The parent projects you are part of</h2>
+        {% for project in projects_parents %}
         <div class="row">
-            {% for project in projects_parents %}
                 <div class="col-md-4 my-4">
                     <div class="card body rounded border-info">
                         <img src="..." class="card-img-top" alt="...">
@@ -35,15 +36,15 @@ Please select the project you want to see
                         </div>
                     </div>
                 </div>
-            {% endfor %}
         </div>
+        {% endfor %}
+        {% endif %}
     
     {% if projects_children %}
-        <h2 class="card-title">The child projects you are part of</h2>
-            <div class="row-mb-5">
-                {% for project in projects_children %}
-                    <div class="card col-md-4 my-4" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
+        <h2 align="center">The child projects you are part of</h2>
+        <div class="row row-cols-1 row-cols-md-3">
+            {% for project in projects_children %}
+                    <div class="card col-md-3 offset-md-1 my-4">
                         <div class="card-body text-center">
                             <h5 class="card-title">{{project.name}}</h5>
                             <label class = "card-text">The name of the team is :-{{project.team.name}}</label>
@@ -53,11 +54,12 @@ Please select the project you want to see
                             {% else %}
                                 <label class="card-text" style="color: red;">Status:-Not Done</label>
                             {% endif %}
+                            <br>
                             <a href={% url "submit_project" project.id project.team.id %} class="btn btn-primary">Go to project</a>
                         </div>
                     </div>
-                {% endfor %}
-            </div>    
+            {% endfor %}  
+            </div>  
     {% endif %}
 </div>
 {% endblock %}

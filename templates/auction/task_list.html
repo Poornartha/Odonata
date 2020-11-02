@@ -27,7 +27,7 @@ Please Login To Continue
         <h4 class="card-title">{{task.name | title}}</h4>
         <h6 class="card-text mt-4 mb-4">{{task.description}}</h6>
         <h6 class="card-text mb-4">Max Points: {{task.max_reward}}</h6>
-        <a href='#' class="btn btn-primary">Check Out Bids</a>
+        <a href={% url "task_detail" task.id %} class="btn btn-primary">Check Out Bids</a>
       </div>
     </div>
   </div>
