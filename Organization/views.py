@@ -9,7 +9,7 @@ from .models import Designation
 from datetime import datetime
 from django.utils import timezone
 from Candidate.urls import emp_login
-#from Projects.urls import display_project
+from Home.urls import home
 
 
 
@@ -113,7 +113,7 @@ def team_create(request , ppk):
             team.child.add(name2)
             team.child.add(name3)
             team.child.add(name4)
-            #return HttpResponseRedirect(reverse('display_project'))
+            return HttpResponseRedirect(reverse('home'))
     else:
         return HttpResponseRedirect(reverse('emp_login'))
 
