@@ -30,6 +30,7 @@ def org_login(request):
                 auth.login(request, user)
             else:
                 context['message'] = "Please check you Username / Password and Try Again"
+            return HttpResponseRedirect(reverse('home'))
     else:
         context['valid1'] = False
     return render(request, 'organization/org_login.html', context)
@@ -68,7 +69,7 @@ def org_architecture(request):
     organization = Organization.objects.get(user=user) or None
     print(organization.confirmed)
     context['organization'] = True
-    if organization.confirmed == True and organization.desigset == False:
+    if organization.desigset == False:
         context['valid'] = True
         if request.method == "POST":
             organization.desigset = True
@@ -81,6 +82,7 @@ def org_architecture(request):
                         Designation.objects.create(organization=organization, designation=desig, priority=i)
                 except:
                     break
+        return HttpResponseRedirect(reverse('home'))
     else:
         if organization is None:
             context['invalid'] = True
@@ -135,9 +137,12 @@ def org_create_project(request):
         except:
             organization = None
         if organization:
+            context['teams'] = Team.objects.all().filter(organization=organization)
             if request.method == "POST":
                 name = request.POST['name']
                 description = request.POST['description']
+                team_name = request.POST['team']
+                team = Team.objects.get(name=team_name, organization=organization)
                 try:
                     file_instance = request.POST['file']
                 except:
@@ -148,9 +153,10 @@ def org_create_project(request):
                 b_points = request.POST['b_points']
                 parent_project = ParentProject.objects.create(organization=organization, name=name)
                 if file_instance:
-                    project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, project_create_file=file_instance, c_pts=c_points, b_pts=b_points, total=points + c_points + b_points, deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'))
+                    project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, project_create_file=file_instance, c_pts=c_points, b_pts=b_points, total=points + c_points + b_points, deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'), team=team)
                 else:
-                    project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, c_pts=c_points, b_pts=b_points, total=points + c_points + b_points, deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'))
+                    project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, c_pts=c_points, b_pts=b_points, total=int(points) + int(c_points) + int(b_points), deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'), team=team)
+                return HttpResponseRedirect(reverse('parent_project_list'))
         else:
             context['valid'] = False
     else:
@@ -276,4 +282,28 @@ def org_projects_list(request, pk):
         context['valid'] = False
     return render(request, 'organization/project_list.html', context)
 
+
+def org_team_create(request):
+    user = request.user
+    context = {}
+    context['valid'] = True
+    if user.is_active:
+        organization = user.organization
+        employees = Emp.objects.all().filter(organization=organization)
+        context['employees'] = employees
+        if request.method == 'POST':
+            team_name = request.POST['title']
+            team = Team.objects.create(name=team_name, organization=organization)
+            for i in range(1, 4):
+                name = 'member-' + str(i)
+                member = request.POST[name]
+                member_inst = Emp.objects.get(name=member)
+                print(member_inst)
+                child_inst, created = Child.objects.get_or_create(emp=member_inst)
+                team.child.add(child_inst)
+                team.save()
+            return HttpResponseRedirect(reverse('org_create_project'))     
+    else:
+        context['valid'] = False
+    return render(request, 'organization/org_team_create.html', context)
             

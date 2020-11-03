@@ -55,7 +55,8 @@ class Child(models.Model):
 
 
 class Team(models.Model):
-    parent = models.ForeignKey(Parent, on_delete = models.CASCADE)
+    parent = models.ForeignKey(Parent, on_delete = models.CASCADE, null=True, blank=True)
+    organization = models.ForeignKey(Organization, on_delete = models.CASCADE, null=True, blank=True)
     child = models.ManyToManyField(Child)
     name = models.CharField(max_length=50)
 

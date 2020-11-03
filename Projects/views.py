@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
-from Client.models import Project , Emp , Team , Parent , Child , Submission, Points
+from Client.models import Project , Emp , Team , Parent , Child , Submission, Points, ParentProject
 from django.utils import timezone
 import datetime
 from Organization.urls import team_create
@@ -11,6 +11,21 @@ from Candidate.urls import emp_login
 def create_project(request):
     context={}
     context['flag'] = False
+    user = request.user
+    organization = Emp.objects.get(user=user).organization
+    # parent_projects = ParentProject.objects.all().filter(organization=organization)
+    emp = Emp.objects.get(user=user)
+    child = Child.objects.get(emp=emp)
+    teams = child.team_set.all()
+    pp = []
+    for team in teams:
+        for project in Project.objects.all().filter(team=team):
+            pp.append(project.parentproject)
+    parent_projects = set(pp)
+    context['parent_projects'] = parent_projects
+    teams = Team.objects.filter(organization=organization)
+    context['teams'] = teams
+    print(teams.all())
     if request.method == 'POST':
         user = request.user
         project_name = request.POST['project_name']
@@ -19,17 +34,22 @@ def create_project(request):
         deadline = request.POST['deadline']
         c_points = request.POST['c_points']
         b_points = request.POST['b_points']
+        parent_project_name = request.POST['parent_project']
+        parent_project = ParentProject.objects.get(name=parent_project_name, organization=organization)
+        team_name = request.POST['team']
+        print(team_name)
+        team = Team.objects.get(name=team_name)
         project_file = request.POST['project_file']
         total_points = int(default_points)+int(c_points)+int(b_points)
         employee = Emp.objects.get(user=user)
         parent , created = Parent.objects.get_or_create(emp=employee)
-        Project.objects.create(name=project_name, c_pts=c_points , b_pts= b_points ,parent=parent , description=project_description , default_pts=default_points , deadline=datetime.datetime.strptime(deadline, '%Y-%m-%dT%H:%M') , project_create_file = project_file , total=total_points)
+        project = Project.objects.create(team=team, parentproject=parent_project, name=project_name, c_pts=c_points , b_pts= b_points ,parent=parent , description=project_description , default_pts=default_points , deadline=datetime.datetime.strptime(deadline, '%Y-%m-%dT%H:%M') , project_create_file = project_file , total=total_points)
         print('project created succesfully')
         context['flag'] = True
         print(parent.emp.points , total_points)
         parent.emp.points -= total_points
         parent.emp.save()
-        return HttpResponseRedirect(reverse('team_create'))
+        return HttpResponseRedirect(reverse('home'))
     else:
         print('project created unsuccessful')
     return render(request , 'projects/project_create.html' , context)
