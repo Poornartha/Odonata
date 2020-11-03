@@ -43,6 +43,7 @@ let user1 = document.getElementById('user1').innerHTML
 let user2 = document.getElementById('user2').innerHTML
 let url = '/chat/' + val 
 let state = []
+$(document).ready(function() { 
 fetch(url)
 .then(response => response.json())
 .then((data) => {
@@ -75,6 +76,7 @@ fetch(url)
     }
 });
 }, 2000)
+});
 
 function renderMessages() {
     let messages = document.getElementById('messages')

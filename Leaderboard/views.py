@@ -177,12 +177,23 @@ def teams_charts_data(request):
         if organization:
             teams = Team.objects.all()
             for team in teams:
-                if team.parent.emp.organization == organization:
-                    total = 0
-                    projects = Project.objects.filter(team=team, status=True)
-                    for project in projects:
-                        total += project.total
-                    data.append({team.name: total})
+                try:
+                    if team.parent.emp.organization == organization:
+                        total = 0
+                        projects = Project.objects.filter(team=team, status=True)
+                        for project in projects:
+                            total += project.total
+                        data.append({team.name: total})
+                except:
+                    try:
+                        if team.organization == organization:
+                            total = 0
+                            projects = Project.objects.filter(team=team, status=True)
+                            for project in projects:
+                                total += project.total
+                            data.append({team.name: total})
+                    except:
+                        pass
     return JsonResponse(data, safe=False)
 
 def teams_chart(request):
@@ -201,7 +212,7 @@ def emp_progress(request):
         submissions = submissions[::-1]
         data.append({str(employee.doj.date()) + '(Joined)': 0})
         for submission in submissions:
-            data.append({str(submission.testing_timestamp.date()) + ' (' + submission.project.name + ')': submission.project.available_points})
+            data.append({str(submission.testing_timestamp.date()) + ' (' + submission.project.name + ')': submission.project.total // len(submission.project.team.child.all())})
     return JsonResponse(data, safe=False)
 
 def emp_progress_chart(request):

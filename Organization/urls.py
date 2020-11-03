@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import org_create, org_login, org_architecture, team_create, org_create_project, org_project_accept, org_submission_list, parent_project_list, org_projects_list
+from .views import org_create, org_login, org_architecture, team_create, org_create_project, org_project_accept, org_submission_list, parent_project_list, org_projects_list, org_team_create
 
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     path('project/<int:pk>/list/', org_submission_list, name="org_submission_list"),
     path('project/parent/list/', parent_project_list, name="parent_project_list"),
     path('project/parent/<int:pk>/', org_projects_list, name="org_projects_list"),
+    path('team/create/', org_team_create, name="org_team_create"),
 ]

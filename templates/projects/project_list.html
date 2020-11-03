@@ -16,8 +16,8 @@ Please select the employee you want to see who has submitted
 
 {% block content %}
     <div class="container">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
+        {% if project %}
+            <div class="card col-md-10 mx-auto">
                 <div class="card-body">
                     <h5 class="card-title">{{project.name}}</h5>
                     <label class = "card-text">The name of the team is :-{{project.team.name}}</label>
@@ -32,5 +32,6 @@ Please select the employee you want to see who has submitted
                     {% endfor %}
                 </div>
             </div>
+        {% endif %}
     </div>
 {% endblock %}

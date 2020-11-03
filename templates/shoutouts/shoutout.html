@@ -330,7 +330,7 @@ body {
                     <form action={% url  'shoutout_like' shoutout.id %} method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-info">
-                            Likes <span class="badge badge-light" style="background-color: rgb(1, 170, 175);">{{shoutout.likes.count}}</span>
+                             <span class="badge badge-info" style="color: white;">{{shoutout.likes.count}}</span> Likes
                         </button>
                     </form>
 					<a class = "btn btn-info ml-3" href={% url "shoutout_comment" shoutout.id %}>Go to this Shoutout</a>

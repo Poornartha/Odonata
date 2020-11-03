@@ -16,8 +16,24 @@ Please fill the form to create a project
 {% block content %}
 
 <div class="container">
-    <form method="POST">
+    <form class="mb-5" method="POST">
         {% csrf_token %}
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Parent Project</label>
+          <select class="form-control" id="exampleFormControlSelect1" name="parent_project">
+            {% for project in parent_projects %}
+            <option value="{{project.name}}">{{project.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Choose Team</label>
+          <select class="form-control" id="exampleFormControlSelect1" name="team">
+            {% for team in teams %}
+            <option value="{{team.name}}">{{team.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
         <div class="form-group">
           <label for="projectname">Please enter the project name</label>
           <input type="text" class="form-control" id="project_name" name="project_name">
@@ -33,7 +49,7 @@ Please fill the form to create a project
         <div class="form-group">
             <label for="deadline">Please enter the project Deadline</label>
             <input type="datetime-local" class="form-control" name="deadline" id="deadline">
-          </div>
+        </div>
         <div class="form-group">
             <label for="defaultpoints">Please enter the default points of the project</label>
             <input type="number" class="form-control" name="default_points" id="default_points">

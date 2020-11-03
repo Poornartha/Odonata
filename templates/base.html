@@ -11,7 +11,7 @@
 
     <!-- Navigation -->
     {% if user.is_active %}
-    {% if organization %}
+    {% if not user.emp %}
         {% include 'partials/_navbar_organization.html' %}
     {% else %}
         {% include 'partials/_navbar_emp.html' %}
