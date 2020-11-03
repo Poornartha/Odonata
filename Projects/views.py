@@ -5,6 +5,7 @@ from Client.models import Project , Emp , Team , Parent , Child , Submission, Po
 from django.utils import timezone
 import datetime
 from Organization.urls import team_create
+from Candidate.urls import emp_login
 # Create your views here.
 
 def create_project(request):
@@ -53,6 +54,7 @@ def submit_project(request , ppk ,tpk):
             Submission.objects.create(project=project , child=child , team=team , after_deadline=after_deadline , file_project = project_file)
             context['flag'] = True
             print('Submission successful')
+            return HttpResponseRedirect(reverse('assigned_project'))
         else:
             print('not submitted')
     else:
@@ -67,13 +69,21 @@ def accept_project(request , ppk , cpk):
     child =Child.objects.get(id = cpk)
     employee = Emp.objects.get(user=user)
     parent = Parent.objects.filter(emp = employee)
-    submission = Submission.objects.filter(project = project , child = child)
+    submissions = Submission.objects.filter(project = project , child = child)
     leader = Project.objects.filter(id = ppk , parent=parent)
     files_list = []
-    for sub in submission:
-        files_list.append(sub.file_project)
+    for submission in submissions:
+        if submission.file_project:
+            files_list.append(submission.file_project)
+        else:
+            files_list=[]
     context['files'] = files_list
     context['child'] = child
+    context['project'] = project
+    if submissions:
+        context['after_deadline'] = submissions[0].after_deadline
+    else:
+        context['after_deadline'] = True
     if leader is not None:
         if user.is_active:
             if request.method == 'POST':
@@ -118,26 +128,17 @@ def display_project(request):
     if user.is_active:    
         employee = Emp.objects.get(user=user)
         parents = Parent.objects.filter(emp=employee)
-        children = Child.objects.filter(emp = employee)
-        project_list_parent = []
+        complete_list = []
+        incomplete_list = []
         for parent in parents:
             project = Project.objects.filter(parent=parent)
             for proj in project:
-                project_list_parent.append(proj)
-            context['projects_parents'] = project_list_parent
-        project_list_child = []
-        for child in children:
-            teams = Team.objects.filter(child = child)
-            for team in teams:
-                projects = Project.objects.filter(team = team)
-                for project in projects:
-                    project_list_child.append(project)
-                    try:
-                        submission = Submission.objects.get(child = child , team = team , project = project)
-                    except:
-                        submission = []
-                context['projects_children'] = project_list_child
-                context['submissions'] = submission
+                if proj.status:
+                    complete_list.append(proj)
+                else:
+                    incomplete_list.append(proj)
+            context['complete_project'] = complete_list
+            context['incomplete_project'] = incomplete_list
     return render(request , 'projects/project_display.html' , context)
 
 def list_project(request , ppk):
@@ -146,8 +147,48 @@ def list_project(request , ppk):
     employee = Emp.objects.get(user = user)
     parent = Parent.objects.filter(emp=employee).first()
     project = Project.objects.get(id = ppk , parent=parent)
+    print(project.status)
     context['project'] = project
     context['teams'] = project.team
     if parent is project.parent:
         context['parent_status'] = True
+    if project.status:
+        pass
+    else:
+        context['project_status'] = True
+    if request.method == 'POST':
+            status = request.POST['status']
+            if status == 'on':
+                project.status = True
+            else:
+                project.status = False
+            project.save()
+            return HttpResponseRedirect(reverse('display_project'))
     return render(request , 'projects/project_list.html',context)
+
+def assigned_project(request):
+    context = {}
+    user = request.user
+    if user.is_authenticated:
+        employee = Emp.objects.get(user=user)
+        children = Child.objects.filter(emp=employee)
+        complete_list = []
+        incomplete_list = []
+        print(employee , children)
+        for child in children.all():
+            teams = Team.objects.filter(child=child)
+            for team in teams.all():
+                projects = Project.objects.filter(team=team)
+                for project in projects:
+                    submissions = Submission.objects.filter(child = child , team = team , project = project)
+                    for submission in submissions.all():
+                        if submission.status:
+                            complete_list.append((submission,project))
+                        else:
+                            incomplete_list.append((submission,project))
+                context['completed'] = complete_list
+                context['incompleted'] = incomplete_list
+        print(complete_list , incomplete_list)
+    else:
+        return HttpResponseRedirect(reverse('emp_login'))
+    return render(request , 'projects/project_child.html' , context)
