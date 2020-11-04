@@ -14,7 +14,7 @@
       </li>
     </ul>
     {% if user.is_active %}
-      <a href='#' class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
+      <a href={% url 'logout' %} class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
     {% else %}
       <a href={% url 'emp_login' %} class="btn btn-outline-success my-2 my-sm-0  mr-md-0" type="submit">Login</a>
     {% endif %}

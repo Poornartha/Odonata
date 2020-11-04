@@ -1,24 +1,22 @@
-<<<<<<< HEAD
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Codeshala</a>
-=======
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href={% url "home" %}>Codeshala</a>
->>>>>>> 2d966472d7506244a8ee465decb072947594d4fd
+  <a class="navbar-brand" href="#">ODONATA</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href={% url 'home' %}>Home</a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Leaderboard
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href={% url 'weekly_lead' %}>Weekly</a>
-          <a class="dropdown-item" href={% url 'yearly_lead' %}>Quaterly</a>
-          <a class="dropdown-item" href={% url 'quaterly_lead' %}>Yearly</a>
+          <a class="dropdown-item" href={% url 'quaterly_lead' %}>Quaterly</a>
+          <a class="dropdown-item" href={% url 'yearly_lead' %}>Yearly</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -26,9 +24,8 @@
           Projects
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href={% url 'display_project' %} target="_blank">Projects Created</a>
-          <a class="dropdown-item" href={% url 'assigned_project' %} target="_blank">Projects Assigned</a>
-          <a class="dropdown-item" href={% url 'create_project' %} target="_blank">Create Project</a>
+          <a class="dropdown-item" href={% url 'display_project' %}>Projects</a>
+          <a class="dropdown-item" href={% url 'create_project' %}>Create Project</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -62,7 +59,7 @@
       </li>
     </ul>
     {% if user.is_active %}
-    <a href='#' class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
+    <a href={% url 'logout' %} class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
     {% else %}
     <a href={% url 'emp_login' %} class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
     {% endif %}

@@ -12,8 +12,8 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href={% url 'weekly_lead' %}>Weekly</a>
-          <a class="dropdown-item" href={% url 'yearly_lead' %}>Quaterly</a>
-          <a class="dropdown-item" href={% url 'quaterly_lead' %}>Yearly</a>
+          <a class="dropdown-item" href={% url 'quaterly_lead' %}>Quaterly</a>
+          <a class="dropdown-item" href={% url 'yearly_lead' %}>Yearly</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -43,9 +43,9 @@
       </li>
     </ul>
     {% if user.is_active %}
-    <a href='#' class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</a>
+    <a href={% url 'logout' %} class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
     {% else %}
-    <a href={% url 'emp_login' %} class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
+    <a href={% url 'emp_login' %} class="btn btn-outline-success my-2 my-sm-0">Login</a>
     {% endif %}
   </div>
 </nav>

@@ -306,4 +306,9 @@ def org_team_create(request):
     else:
         context['valid'] = False
     return render(request, 'organization/org_team_create.html', context)
+
+def user_logout(request):
+    if request.user.is_authenticated:
+        auth.logout(request)
+    return HttpResponseRedirect(reverse('home'))
             
