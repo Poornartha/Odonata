@@ -66,9 +66,12 @@ def emp_login(request):
             print(user)
             if user is not None:
                 auth.login(request, user)
+                return HttpResponseRedirect(reverse('home'))
             else:
+                context['valid1'] = False
+                print('No Login')
                 context['message'] = "Please check your Username / Password and Try Again"
-            return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('emp_login'))
     else:
         context['valid1'] = False
     

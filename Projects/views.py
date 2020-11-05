@@ -35,6 +35,7 @@ def create_project(request):
         c_points = request.POST['c_points']
         b_points = request.POST['b_points']
         parent_project_name = request.POST['parent_project']
+        timestamp = datetime.datetime.now()
         parent_project = ParentProject.objects.get(name=parent_project_name, organization=organization)
         team_name = request.POST['team']
         print(team_name)
@@ -43,7 +44,7 @@ def create_project(request):
         total_points = int(default_points)+int(c_points)+int(b_points)
         employee = Emp.objects.get(user=user)
         parent , created = Parent.objects.get_or_create(emp=employee)
-        project = Project.objects.create(team=team, parentproject=parent_project, name=project_name, c_pts=c_points , b_pts= b_points ,parent=parent , description=project_description , default_pts=default_points , deadline=datetime.datetime.strptime(deadline, '%Y-%m-%dT%H:%M') , project_create_file = project_file , total=total_points)
+        project = Project.objects.create(team=team, parentproject=parent_project, name=project_name, c_pts=c_points , b_pts= b_points ,parent=parent , description=project_description , default_pts=default_points , deadline=datetime.datetime.strptime(deadline, '%Y-%m-%dT%H:%M') , timestamp = timestamp , project_create_file = project_file , total=total_points)
         print('project created succesfully')
         context['flag'] = True
         print(parent.emp.points , total_points)
@@ -71,7 +72,7 @@ def submit_project(request , ppk ,tpk):
             if timestamp > project.deadline:
                 context['messages'] = 'You have submitted your project after deadline'
                 after_deadline = True
-            Submission.objects.create(project=project , child=child , team=team , after_deadline=after_deadline , file_project = project_file)
+            Submission.objects.create(project=project , child=child , team=team , after_deadline=after_deadline , file_project = project_file , timestamp=timestamp)
             context['flag'] = True
             print('Submission successful')
             return HttpResponseRedirect(reverse('assigned_project'))
@@ -83,7 +84,6 @@ def submit_project(request , ppk ,tpk):
 
 def accept_project(request , ppk , cpk):
     context = {}
-    checksum = 0
     user = request.user
     project = Project.objects.get(id = ppk)
     child =Child.objects.get(id = cpk)
@@ -200,12 +200,11 @@ def assigned_project(request):
             for team in teams.all():
                 projects = Project.objects.filter(team=team)
                 for project in projects:
-                    submissions = Submission.objects.filter(child = child , team = team , project = project)
-                    for submission in submissions.all():
-                        if submission.status:
-                            complete_list.append((submission,project))
-                        else:
-                            incomplete_list.append((submission,project))
+                    submissions = Submission.objects.filter(child = child , team = team , project = project).order_by('-timestamp').first()
+                    if submissions.status:
+                        complete_list.append((submissions,project))
+                    else:
+                        incomplete_list.append((submissions,project))
                 context['completed'] = complete_list
                 context['incompleted'] = incomplete_list
         print(complete_list , incomplete_list)

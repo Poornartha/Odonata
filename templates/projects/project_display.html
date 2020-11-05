@@ -26,6 +26,7 @@ Please select the project you want to see
                         <h5 class="card-title">{{project.name}}</h5>
                         <label class = "card-text">The name of the team is :-{{project.team.name}}</label>
                         <p class="card-text">Project Description:-{{project.description}}</p>
+                        <p class="card-text">Project Created on:-{{project.timestamp}}</p>
                         <a href={% url "list_project" project.id %} class="btn btn-primary">Go to project</a>
                     </div>
                 </div>
@@ -43,14 +44,13 @@ Please select the project you want to see
                         <h5 class="card-title">{{project.name}}</h5>
                         <label class = "card-text">The name of the team is :-{{project.team.name}}</label>
                         <p class="card-text">Project Description:-{{project.description}}</p>
+                        <p class="card-text">Project Created on:-{{project.timestamp}}</p>
                         <a href={% url "list_project" project.id %} class="btn btn-primary">Go to project</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
-    {% endif %}
-    
-    
+    {% endif %}    
 </div>
 {% endblock %}

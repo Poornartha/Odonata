@@ -75,6 +75,7 @@ class Project(models.Model):
     total = models.IntegerField()
     parent = models.ForeignKey(Parent, on_delete = models.CASCADE, null=True, blank=True)
     status = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True , blank=True , null=True)
     deadline = models.DateField(blank=True , null=True)
     team = models.ForeignKey(Team, on_delete = models.CASCADE, null =True)
     checksum = models.IntegerField(default = 0)
