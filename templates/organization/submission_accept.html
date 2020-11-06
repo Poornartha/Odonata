@@ -30,7 +30,11 @@ Please Login To Continue
     <h5 class="card-title">Submission By: {{submission.child.emp}}</h5>
     <p class="card-text">Points: {{project.default_pts}}</p>
     <div class="flex">
-    <a href="{{file.url}}" class="btn btn-outline-secondary mb-3 mt-2">Attachment</a>
+      {% if file %}
+        <a href="{{file.url}}" class="btn btn-outline-secondary mb-3 mt-2">Attachment</a>
+      {% else %}
+        <h5 style="color: red;">Submission not done yet</h5>
+      {% endif %}
     </div>
     <div>
     <form method="POST">

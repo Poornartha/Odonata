@@ -29,9 +29,13 @@ Please Login To Continue
     <h5 class="card-title">Submission By: {{submission.employee}}</h5>
     <p class="card-text">{{submission.description}}</p>
     <div class="flex">
-    {% for file in files %}
-    <a href="{{file.file_item.url}}" class="btn btn-outline-secondary mb-3 mt-2">Attachment</a>
-    {% endfor %}
+      {% if files %}
+        {% for file in files %}
+        <a href="{{file.file_item.url}}" class="btn btn-outline-secondary mb-3 mt-2">Attachment</a>
+        {% endfor %}
+      {% else %}
+        <h5 style="color: red;">File not yet submitted.</h5>
+      {% endif %}
     </div>
     <div>
     <form method="POST">

@@ -126,8 +126,6 @@ def team_create(request):
             return HttpResponseRedirect(reverse('create_project'))
     else:
         return HttpResponseRedirect(reverse('emp_login'))
-
-    
     return render(request, 'organization/team_create.html', context)
 
 
@@ -183,7 +181,10 @@ def org_project_accept(request, pk):
                 submission = Submission.objects.get(id=pk)
                 creator = submission.project.parentproject.organization
                 if organization == creator:
-                    submission_file = submission.file_project
+                    if submission.file_project:
+                        submission_file = submission.file_project
+                    else:
+                        submission_file = []
                     context['submission'] = submission
                     context['file'] = submission_file
                     context['project'] = submission.project
@@ -212,6 +213,7 @@ def org_project_accept(request, pk):
                             submission.save()
                             submission.project.status = True
                             submission.project.save()
+                        return HttpResponseRedirect(reverse('org_submission_list' , args=[str(submission.project.id)]))
                 else:
                     context['message'] = "You are not the creator of this project."
                     context['valid'] = False

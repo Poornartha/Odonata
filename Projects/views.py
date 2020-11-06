@@ -201,10 +201,13 @@ def assigned_project(request):
                 projects = Project.objects.filter(team=team)
                 for project in projects:
                     submissions = Submission.objects.filter(child = child , team = team , project = project).order_by('-timestamp').first()
-                    if submissions.status:
-                        complete_list.append((submissions,project))
+                    if submissions:
+                        if submissions.status:
+                            complete_list.append((submissions,project))
+                        else:
+                            incomplete_list.append((submissions,project))
                     else:
-                        incomplete_list.append((submissions,project))
+                        pass
                 context['completed'] = complete_list
                 context['incompleted'] = incomplete_list
         print(complete_list , incomplete_list)
