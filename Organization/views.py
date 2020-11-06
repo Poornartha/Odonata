@@ -90,35 +90,40 @@ def org_architecture(request):
     return render(request, 'organization/org_architecture.html', context)
 
 
-def team_create(request , ppk):
+def team_create(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        project = Project.objects.get(id = ppk)
-        context['project'] = project
-       
         employee = Emp.objects.get(user = user)
         parents = Parent.objects.get(emp = employee)
-        
         children = Child.objects.filter(parent = parents)
-        
-
         context['children'] = children
         print(children)
-        
         if request.method == 'POST':
             team_name = request.POST['team_name']
             name1 = request.POST['name1']
             name2 = request.POST['name2']
             name3 = request.POST['name3']
             name4 = request.POST['name4']
-
             team = Team.objects.create(name = team_name, parent = parents)
-            team.child.add(name1)
-            team.child.add(name2)
-            team.child.add(name3)
-            team.child.add(name4)
-            return HttpResponseRedirect(reverse('home'))
+            if name1:
+                print(name1)
+                emp_in = Emp.objects.get(name=name1)
+                child1 = Child.objects.get(emp=emp_in)
+                team.child.add(child1)
+            if name2:
+                emp_in = Emp.objects.get(name=name1)
+                child2 = Child.objects.get(emp=emp_in)
+                team.child.add(child2)
+            if name3:
+                emp_in = Emp.objects.get(name=name1)
+                child3 = Child.objects.get(emp=emp_in)
+                team.child.add(child3)
+            if name4:
+                emp_in = Emp.objects.get(name=name1)
+                child4 = Child.objects.get(emp=emp_in)
+                team.child.add(child4)
+            return HttpResponseRedirect(reverse('create_project'))
     else:
         return HttpResponseRedirect(reverse('emp_login'))
 
@@ -294,14 +299,17 @@ def org_team_create(request):
         if request.method == 'POST':
             team_name = request.POST['title']
             team = Team.objects.create(name=team_name, organization=organization)
-            for i in range(1, 4):
-                name = 'member-' + str(i)
-                member = request.POST[name]
-                member_inst = Emp.objects.get(name=member)
-                print(member_inst)
-                child_inst, created = Child.objects.get_or_create(emp=member_inst)
-                team.child.add(child_inst)
-                team.save()
+            for i in range(1, 11):
+                try:
+                    name = 'member-' + str(i)
+                    member = request.POST[name]
+                    member_inst = Emp.objects.get(name=member)
+                    print(member_inst)
+                    child_inst, created = Child.objects.get_or_create(emp=member_inst)
+                    team.child.add(child_inst)
+                    team.save()
+                except:
+                    pass
             return HttpResponseRedirect(reverse('org_create_project'))     
     else:
         context['valid'] = False
