@@ -25,7 +25,7 @@ def weekly_lead(request):
     if organization:
         for user in User.objects.all():
             try:
-                employee = Emp.objects.get(user=user)
+                employee = Emp.objects.get(user=user, organization=organization)
             except:
                 employee = None
             if employee:
@@ -67,7 +67,7 @@ def yearly_lead(request):
     if organization:
         for user in User.objects.all():
             try:
-                employee = Emp.objects.get(user=user)
+                employee = Emp.objects.get(user=user, organization=organization)
             except:
                 employee = None
             if employee:
@@ -108,7 +108,7 @@ def quaterly_lead(request):
     if organization:
         for user in User.objects.all():
             try:
-                employee = Emp.objects.get(user=user)
+                employee = Emp.objects.get(user=user, organization=organization)
             except:
                 employee = None
             if employee:
