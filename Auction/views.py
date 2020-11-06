@@ -224,7 +224,10 @@ def submission_accept(request, pk):
         if employee == creator:
             submission_files = submission.tasksubmissionfile_set.all()
             context['submission'] = submission
-            context['files'] = submission_files
+            if list(submission_files) == []:
+                context['files'] = []
+            else:
+                context['files'] = submission_files
             task = submission.assignment.task
             task_assigned = Taskassigned.objects.get(task = task)
             print(task_assigned)
