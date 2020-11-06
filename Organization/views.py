@@ -90,29 +90,21 @@ def org_architecture(request):
     return render(request, 'organization/org_architecture.html', context)
 
 
-def team_create(request , ppk):
+def team_create(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        project = Project.objects.get(id = ppk)
-        context['project'] = project
-       
         employee = Emp.objects.get(user = user)
         parents = Parent.objects.get(emp = employee)
-        
         children = Child.objects.filter(parent = parents)
-        
-
         context['children'] = children
         print(children)
-        
         if request.method == 'POST':
             team_name = request.POST['team_name']
             name1 = request.POST['name1']
             name2 = request.POST['name2']
             name3 = request.POST['name3']
             name4 = request.POST['name4']
-
             team = Team.objects.create(name = team_name, parent = parents)
             team.child.add(name1)
             team.child.add(name2)
@@ -121,8 +113,6 @@ def team_create(request , ppk):
             return HttpResponseRedirect(reverse('home'))
     else:
         return HttpResponseRedirect(reverse('emp_login'))
-
-    
     return render(request, 'organization/team_create.html', context)
 
 
