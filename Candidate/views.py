@@ -32,9 +32,9 @@ def emp_create(request):
                 else:
                     user = User.objects.create_user(username=username, email=email, password=password)
                     employee = Emp.objects.create(name=user.username, user=user, points=0, organization=organization,dob=datetime.strptime(dob , '%Y-%m-%dT%H:%M'))
+                    return HttpResponseRedirect(reverse('login'))
         else:
             context['message'] = "Organozation Does not Exist"
-        return HttpResponseRedirect(reverse('emp_login'))
     return render(request, 'candidate/emp_create.html', context)
 
 def emp_design(request):
@@ -50,6 +50,22 @@ def emp_design(request):
             print(design)
             employee.designation = design
             employee.save()
+            desig_inst = Designation.objects.get(designation=design, organization=org)
+            parent_inst, created = Parent.objects.get_or_create(emp=employee)
+            for emp in Emp.objects.all().filter(organization=org):
+                design_emp = emp.designation
+                if design_emp != '':
+                    design_emp_inst = Designation.objects.get(designation=design_emp)
+                    if design_emp_inst.priority > desig_inst.priority:
+                        child_inst, created = Child.objects.get_or_create(emp=emp)
+                        child_inst.parent.add(parent_inst)
+                        child_inst.save()
+                    elif design_emp_inst.priority < desig_inst.priority:
+                        parent_now, created = Parent.objects.get_or_create(emp=emp)
+                        child_now, created = Child.objects.get_or_create(emp=employee)
+                        child_now.parent.add(parent_now)
+                        child_now.save()
+            return HttpResponseRedirect(reverse('home'))
     else:
         context['valid'] = False
     return render(request, 'candidate/emp_design.html', context)
@@ -66,6 +82,9 @@ def emp_login(request):
             print(user)
             if user is not None:
                 auth.login(request, user)
+                emp = Emp.objects.get(user=user)
+                if emp.designation == '':
+                    return HttpResponseRedirect(reverse('emp_design'))
                 return HttpResponseRedirect(reverse('home'))
             else:
                 context['valid1'] = False

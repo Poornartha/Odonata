@@ -106,11 +106,24 @@ def team_create(request):
             name3 = request.POST['name3']
             name4 = request.POST['name4']
             team = Team.objects.create(name = team_name, parent = parents)
-            team.child.add(name1)
-            team.child.add(name2)
-            team.child.add(name3)
-            team.child.add(name4)
-            return HttpResponseRedirect(reverse('home'))
+            if name1:
+                print(name1)
+                emp_in = Emp.objects.get(name=name1)
+                child1 = Child.objects.get(emp=emp_in)
+                team.child.add(child1)
+            if name2:
+                emp_in = Emp.objects.get(name=name1)
+                child2 = Child.objects.get(emp=emp_in)
+                team.child.add(child2)
+            if name3:
+                emp_in = Emp.objects.get(name=name1)
+                child3 = Child.objects.get(emp=emp_in)
+                team.child.add(child3)
+            if name4:
+                emp_in = Emp.objects.get(name=name1)
+                child4 = Child.objects.get(emp=emp_in)
+                team.child.add(child4)
+            return HttpResponseRedirect(reverse('create_project'))
     else:
         return HttpResponseRedirect(reverse('emp_login'))
     return render(request, 'organization/team_create.html', context)
@@ -168,7 +181,10 @@ def org_project_accept(request, pk):
                 submission = Submission.objects.get(id=pk)
                 creator = submission.project.parentproject.organization
                 if organization == creator:
-                    submission_file = submission.file_project
+                    if submission.file_project:
+                        submission_file = submission.file_project
+                    else:
+                        submission_file = []
                     context['submission'] = submission
                     context['file'] = submission_file
                     context['project'] = submission.project
@@ -197,6 +213,7 @@ def org_project_accept(request, pk):
                             submission.save()
                             submission.project.status = True
                             submission.project.save()
+                        return HttpResponseRedirect(reverse('org_submission_list' , args=[str(submission.project.id)]))
                 else:
                     context['message'] = "You are not the creator of this project."
                     context['valid'] = False
@@ -284,14 +301,17 @@ def org_team_create(request):
         if request.method == 'POST':
             team_name = request.POST['title']
             team = Team.objects.create(name=team_name, organization=organization)
-            for i in range(1, 4):
-                name = 'member-' + str(i)
-                member = request.POST[name]
-                member_inst = Emp.objects.get(name=member)
-                print(member_inst)
-                child_inst, created = Child.objects.get_or_create(emp=member_inst)
-                team.child.add(child_inst)
-                team.save()
+            for i in range(1, 11):
+                try:
+                    name = 'member-' + str(i)
+                    member = request.POST[name]
+                    member_inst = Emp.objects.get(name=member)
+                    print(member_inst)
+                    child_inst, created = Child.objects.get_or_create(emp=member_inst)
+                    team.child.add(child_inst)
+                    team.save()
+                except:
+                    pass
             return HttpResponseRedirect(reverse('org_create_project'))     
     else:
         context['valid'] = False
