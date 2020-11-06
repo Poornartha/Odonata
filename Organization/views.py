@@ -82,7 +82,7 @@ def org_architecture(request):
                         Designation.objects.create(organization=organization, designation=desig, priority=i)
                 except:
                     break
-        return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('home'))
     else:
         if organization is None:
             context['invalid'] = True
