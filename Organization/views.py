@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, reverse
-from Client.models import Organization, Submission
-from django.shortcuts import render
-from Client.models import Organization, Child, Team, Emp, Project, Parent, ParentProject, Points                   
+from Client.models import Organization, Submission, Child, Team, Emp, Project, Parent, ParentProject, Points
+from django.shortcuts import render                  
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
