@@ -32,7 +32,7 @@ def emp_create(request):
                 else:
                     user = User.objects.create_user(username=username, email=email, password=password)
                     employee = Emp.objects.create(name=user.username, user=user, points=0, organization=organization,dob=datetime.strptime(dob , '%Y-%m-%dT%H:%M'))
-                    return HttpResponseRedirect(reverse('login'))
+                    return HttpResponseRedirect(reverse('home'))
         else:
             context['message'] = "Organozation Does not Exist"
     return render(request, 'candidate/emp_create.html', context)
@@ -55,7 +55,7 @@ def emp_design(request):
             for emp in Emp.objects.all().filter(organization=org):
                 design_emp = emp.designation
                 if design_emp != '':
-                    design_emp_inst = Designation.objects.get(designation=design_emp)
+                    design_emp_inst = Designation.objects.get(designation=design_emp, organization=org)
                     if design_emp_inst.priority > desig_inst.priority:
                         child_inst, created = Child.objects.get_or_create(emp=emp)
                         child_inst.parent.add(parent_inst)

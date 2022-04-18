@@ -111,15 +111,15 @@ def team_create(request):
                 child1 = Child.objects.get(emp=emp_in)
                 team.child.add(child1)
             if name2:
-                emp_in = Emp.objects.get(name=name1)
+                emp_in = Emp.objects.get(name=name2)
                 child2 = Child.objects.get(emp=emp_in)
                 team.child.add(child2)
             if name3:
-                emp_in = Emp.objects.get(name=name1)
+                emp_in = Emp.objects.get(name=name3)
                 child3 = Child.objects.get(emp=emp_in)
                 team.child.add(child3)
             if name4:
-                emp_in = Emp.objects.get(name=name1)
+                emp_in = Emp.objects.get(name=name4)
                 child4 = Child.objects.get(emp=emp_in)
                 team.child.add(child4)
             return HttpResponseRedirect(reverse('create_project'))
@@ -150,9 +150,49 @@ def org_create_project(request):
                 except:
                     file_instance = None
                 deadline = request.POST['deadline']
-                points = request.POST['points']
-                c_points = request.POST['c_points']
-                b_points = request.POST['b_points']
+                wtFactor = [
+                    [3, 4, 6],
+                    [4, 5, 7],
+                    [3, 4, 6],
+                    [7, 10, 15],
+                    [5, 7, 10]
+                ]
+
+                ufp = 0
+
+                cand1 = ["item1", "item2", "item3", "item4", "item5"]
+                btns = ["radio1", "radio2", "radio3"]
+
+                for cand_index in range(len(cand1)):
+                    cand = cand1[cand_index]
+                    for j in range(3):
+                        check = cand + "-" + btns[j]
+                        try:
+                            if request.POST[check]:
+                                ufp += int(request.POST[cand]) * wtFactor[cand_index][j]
+                        except: 
+                            pass
+                
+                q = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14"]
+                btns = ["radio1", "radio2", "radio3", "radio4", "radio5"]
+
+                fi = 0
+
+                for i in q:
+                    for j in btns:
+                        search = i + "-" + j
+                        try:
+                            fi += int(request.POST[search])
+                        except:
+                            pass
+                
+                caf = 0.65 + (0.01 * fi)
+                fp = ufp * caf
+
+                points = fp * 100
+                c_points = 0
+                b_points = 0
+                print(fp)
                 parent_project = ParentProject.objects.create(organization=organization, name=name)
                 if file_instance:
                     project = Project.objects.create(parentproject = parent_project, name=name, description=description, default_pts=points, project_create_file=file_instance, c_pts=c_points, b_pts=b_points, total=points + c_points + b_points, deadline=datetime.strptime(deadline , '%Y-%m-%dT%H:%M'), team=team)

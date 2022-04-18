@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Employee Names
+{% endblock %}
+
+{% block upscript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block header %}
+Employee
+{% endblock %}
+
+{% block content %}
+
+<div class="container mb-5">
+<ul class="list-group">
+    {% for contact in contacts %}
+    <li class="list-group-item">{{ contact.name | title }} </li>
+    {% endfor %}
+</ul>
+</div>
+{% endblock %}

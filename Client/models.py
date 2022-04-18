@@ -37,7 +37,7 @@ class Emp(models.Model):
     designation = models.TextField(blank=True)
     
     def __str__(self):
-        return self.name
+        return str(self.organization) + " - " + str(self.name)
 
 class Parent(models.Model):
     emp = models.OneToOneField(Emp, on_delete = models.CASCADE)

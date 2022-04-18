@@ -41,8 +41,22 @@ def contacts_list(request):
     context['valid'] = True
     if user.is_active:
         employee = Emp.objects.get(user=user)
-        contacts = Emp.objects.all().filter(organization=employee.organization)
+        contacts = Emp.objects.all().filter(organization=employee.organization) 
+        contacts = contacts.exclude(name = employee.name)
         context['contacts'] = contacts
     else:
         context['valid'] = False
     return render(request, 'chat/messages_list.html', context)
+
+def emp_list(request):
+    user = request.user
+    context = {}
+    context['valid'] = True
+    if user.is_active:
+        employee = Emp.objects.get(user=user)
+        contacts = Emp.objects.all().filter(organization=employee.organization) 
+        contacts = contacts.exclude(name = employee.name)
+        context['contacts'] = contacts
+    else:
+        context['valid'] = False
+    return render(request, 'chat/emp_list.html', context)
